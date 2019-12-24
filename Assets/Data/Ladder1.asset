@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ba0e47597f33694faa0f855beeebbd6, type: 3}
   m_Name: Ladder1
   m_EditorClassIdentifier: 
-  startIndex: 0
-  endIndex: 0
-  sprite: {fileID: 0}
+  startIndex: 2
+  endIndex: 20
+  sprite: {fileID: -1033766676993296678, guid: 333233a9cdf84464eb6ade0910f7c552, type: 3}

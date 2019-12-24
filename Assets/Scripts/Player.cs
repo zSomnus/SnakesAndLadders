@@ -45,9 +45,9 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(1.5f);
         }
 
-        if (_gameBoard.PlayerOnSnake(PositionIndex) >= 0)
+        if (_gameBoard.PlayerOnSnakeOrLadder(PositionIndex) >= 0)
         {
-            StartCoroutine(MoveGeneral(transform, _gameBoard.PlayerOnSnake(PositionIndex), 2));
+            StartCoroutine(MoveGeneral(transform, _gameBoard.PlayerOnSnakeOrLadder(PositionIndex), 2));
         }
     }
     

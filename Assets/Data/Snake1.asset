@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f7632eff57f1044dae8d95f0bd9f9c2, type: 3}
   m_Name: Snake1
   m_EditorClassIdentifier: 
-  startIndex: 0
-  endIndex: 0
+  startIndex: 10
+  endIndex: 3
+  sprite: {fileID: -1033766676993296678, guid: 333233a9cdf84464eb6ade0910f7c552, type: 3}
