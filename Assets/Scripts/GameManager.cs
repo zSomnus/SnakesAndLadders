@@ -24,7 +24,6 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -34,21 +33,15 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        gameState = GameState.Preparing;
+
         player1.onPlayerMovementFinished += ToggleGameState;
         player2.onPlayerMovementFinished += ToggleGameState;
-        gameState = GameState.Preparing;
         // Preparation
 
         gameState = GameState.Player1Turn;
     }
 
-    // Update is called once per frame
-    // void Update()
-    // {
-    //     WaitForPlayerInput();
-    // }
-
-    
     public void RollDiceAndMovePlayer()
     {
         switch (gameState)    // only accept player input if it is in player 1 turn or player 2 turn

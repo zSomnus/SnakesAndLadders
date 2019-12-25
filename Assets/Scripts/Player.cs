@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -65,6 +66,10 @@ public class Player : MonoBehaviour
             {
                 StartCoroutine(Climb(transform, _gameBoard.PlayerOnSnakeOrLadder(PositionIndex), 2));
             }
+        }
+        else if (_gameBoard.CheckIfPlayerOnGameTile(this)>= 0)
+        {
+            SceneManager.LoadScene(_gameBoard.CheckIfPlayerOnGameTile(this));
         }
         else
         {

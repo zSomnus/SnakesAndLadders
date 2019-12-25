@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// This class is used to contain game board items (Like the position of the snakes and ladders)
@@ -13,6 +14,8 @@ public class GameBoard : MonoBehaviour
     public Snake[] snakes;
 
     public Ladder[] ladders;
+
+    public GameTile[] gameTiles;
 
     /// <summary>
     /// Check if player needs to fall down to a tile
@@ -47,6 +50,28 @@ public class GameBoard : MonoBehaviour
 
         return -1;
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="player"></param>
+    /// <returns>Return the game scene the player to go to, if there is not game tile, return -1</returns>
+    public int CheckIfPlayerOnGameTile(Player player)
+    {
+        if (gameTiles.Length > 0)
+        {
+            foreach (var gameTile in gameTiles)
+            {
+                if (gameTile.positionIndex == player.PositionIndex)
+                {
+                    return gameTile.gameSceneIndex;
+                }
+            }  
+        }
+
+        return -1;
+    }
+    
     
     
     
