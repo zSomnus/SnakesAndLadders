@@ -7,11 +7,13 @@ public class Player : MonoBehaviour
 {
     // To indicate whether the player is moving or standing still
     public PlayerState playerState = PlayerState.Idle;
+    public int playerIndex = 1;
     
     // To indicate which direction the player is moving to
     public PlayerMovingDirection playerMovingDirection = PlayerMovingDirection.Right;
     
-    
+    public delegate void PlayerMovementFinishedDelegate(Player player);
+    public event PlayerMovementFinishedDelegate onPlayerMovementFinished;
     
     private GameBoard _gameBoard;
     
@@ -48,16 +50,26 @@ public class Player : MonoBehaviour
             PositionIndex++;
             StartCoroutine(MoveOneTile(transform, timeToMoveOneTile));
             
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(timeToMoveOneTile);
         }
 
-        if (_gameBoard.PlayerOnSnakeOrLadder(PositionIndex) >= 0)
+        if (_gameBoard.PlayerOnSnakeOrLadder(PositionIndex) >= 0)    // If player is on a snake or ladder tile
         {
-            StartCoroutine(MoveGeneral(transform, _gameBoard.PlayerOnSnakeOrLadder(PositionIndex), 2));
+            if (_gameBoard.PlayerOnSnakeOrLadder(PositionIndex) < PositionIndex)    // player is falling
+            {
+                
+                StartCoroutine(Fall(transform, _gameBoard.PlayerOnSnakeOrLadder(PositionIndex), 2));
+                
+            }
+            else // player is climbing
+            {
+                StartCoroutine(Climb(transform, _gameBoard.PlayerOnSnakeOrLadder(PositionIndex), 2));
+            }
         }
         else
         {
             playerState = PlayerState.Idle;
+            onPlayerMovementFinished?.Invoke(this);
         }
 
     }
@@ -99,9 +111,13 @@ public class Player : MonoBehaviour
         
     }
     
-    private IEnumerator MoveGeneral(Transform playerTransform,int destinationIndex, float timeToMove)    // player movement implementation
+    private IEnumerator Fall(Transform playerTransform,int destinationIndex, float timeToMove)    // player movement implementation
     {
-        playerState = PlayerState.Moving;
+        // Update data
+        playerState = PlayerState.Falling;
+        PositionIndex = destinationIndex;
+
+        // Update graphics
         var curentPos = playerTransform.position;
         var t = 0f;
         while (t < 1)
@@ -111,6 +127,30 @@ public class Player : MonoBehaviour
             yield return null;
         }    
         playerState = PlayerState.Idle;
+        onPlayerMovementFinished?.Invoke(this);
+        
+    }
+    
+    private IEnumerator Climb(Transform playerTransform,int destinationIndex, float timeToMove)    // player movement implementation
+    {
+        // Update data
+        playerState = PlayerState.Climbing;
+        PositionIndex = destinationIndex; 
+        
+        // Update graphics
+        var curentPos = playerTransform.position;
+        var t = 0f;
+        while (t < 1)
+        {
+            t+=Time.deltaTime/timeToMove;
+            transform.position = Vector3.Lerp(curentPos, _gameBoard.wayPoints[destinationIndex].position, t);
+            yield return null;
+        }    
+        
+        // Update data
+           
+        playerState = PlayerState.Idle;
+        onPlayerMovementFinished?.Invoke(this);
         
     }
 
@@ -124,13 +164,8 @@ public class Player : MonoBehaviour
         return PositionIndex == _gameBoard.wayPoints.Length - 1;
     }
 
-    public void FallDown(int newPositionIndex)
-    {
-        print("player falls to " + newPositionIndex);
-        
-    }
 }
 
-public enum PlayerState{ Moving, Idle }
+public enum PlayerState{ Moving, Idle, Falling, Climbing }
 public enum PlayerMovingDirection { Left, Right, Up, Down}
 

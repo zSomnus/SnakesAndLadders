@@ -10,10 +10,14 @@ public class GameManager : MonoBehaviour
 
     public GameBoard gameBoard;
     
-    [HideInInspector]
+    
     public GameState gameState;
 
     public static GameManager Instance { get; private set; }
+    
+    // Event
+
+    
 
     private void Awake()
     {
@@ -30,6 +34,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        player1.onPlayerMovementFinished += ToggleGameState;
+        player2.onPlayerMovementFinished += ToggleGameState;
         gameState = GameState.Preparing;
         // Preparation
 
@@ -37,47 +43,53 @@ public class GameManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    // void Update()
+    // {
+    //     WaitForPlayerInput();
+    // }
+
+    
+    public void RollDiceAndMovePlayer()
     {
-        switch (gameState)
+        switch (gameState)    // only accept player input if it is in player 1 turn or player 2 turn
         {
             case GameState.Player1Turn:
-                if (Input.GetKeyDown(KeyCode.A))    // When player rolls the dice
+                if (player2.playerState == PlayerState.Moving) // Check if the other player is moving
                 {
-                    if (player2.playerState == PlayerState.Moving)    // Check if the other player is moving
-                    {
-                        return;    // If yes, wait for it to finish moving
-                    }
-                    player1.MoveRandomly();
-                    if (!CheckIfAnyoneWin())
-                    {
-                        gameState = GameState.Player2Turn;
-                    }
+                    return;
                 }
+
+                player1.MoveRandomly();
+                
 
                 break;
             case GameState.Player2Turn:
-                if (Input.GetKeyDown(KeyCode.A))
+                if (player1.playerState == PlayerState.Moving) // Check if the other player is moving
                 {
-                    if (player1.playerState == PlayerState.Moving)    // Check if the other player is moving
-                    {
-                        return;    // If yes, wait for it to finish moving
-                    }
-                    player2.MoveRandomly();
-                    if (!CheckIfAnyoneWin())
-                    {
-                        gameState = GameState.Player1Turn;
-                    }
+                    return;
                 }
+
+                player2.MoveRandomly();
+                
 
                 break;
         }
-        
     }
 
-    public bool CheckIfAnyoneWin()
+    public void ToggleGameState(Player previousPlayer)
     {
-        if (player1.ReachEnd() || player2.ReachEnd())
+        if (!CheckIfAnyoneWin())
+        {
+            if (previousPlayer.playerIndex == 1)
+            {
+                gameState = GameState.Player2Turn;
+            }
+            else
+            {
+                gameState = GameState.Player1Turn;
+            }
+        }
+        else
         {
             gameState = GameState.GameOver;
             if (player1.ReachEnd())
@@ -88,14 +100,12 @@ public class GameManager : MonoBehaviour
             {
                 print("Player 2 won");
             }
-            return true;
-            
         }
-        else
-        {
-            return false;
-        }
-        
+    }
+
+    private bool CheckIfAnyoneWin()
+    {
+        return player1.ReachEnd() || player2.ReachEnd();
     }
     
     
