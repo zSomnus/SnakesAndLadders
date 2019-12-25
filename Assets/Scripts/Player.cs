@@ -69,7 +69,7 @@ public class Player : MonoBehaviour
         }
         else if (_gameBoard.CheckIfPlayerOnGameTile(this)>= 0)
         {
-            SceneManager.LoadScene(_gameBoard.CheckIfPlayerOnGameTile(this));
+            GameManager.Instance.PlayMiniGame(_gameBoard.CheckIfPlayerOnGameTile(this));
         }
         else
         {

@@ -17,6 +17,10 @@
           <e p="MultipleTargetCamera.cs" t="Include" />
           <e p="Player.cs" t="Include" />
           <e p="PlayerAnimatonUpdater.cs" t="Include" />
+          <e p="SaveAndLoad" t="Include">
+            <e p="PlayerData.cs" t="Include" />
+            <e p="SaveSystem.cs" t="Include" />
+          </e>
           <e p="Snake.cs" t="Include" />
           <e p="Sound.cs" t="Include" />
         </e>

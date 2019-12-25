@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -34,12 +35,15 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         gameState = GameState.Preparing;
-
+        
         player1.onPlayerMovementFinished += ToggleGameState;
         player2.onPlayerMovementFinished += ToggleGameState;
         // Preparation
-
-        gameState = GameState.Player1Turn;
+        if (!LoadGameProgress())
+        {
+            gameState = GameState.Player1Turn;
+        }
+        
     }
 
     public void RollDiceAndMovePlayer()
@@ -100,8 +104,62 @@ public class GameManager : MonoBehaviour
     {
         return player1.ReachEnd() || player2.ReachEnd();
     }
-    
-    
+
+    public void SaveGameProgress()
+    {
+        if (gameState == GameState.Player1Turn)
+        {
+            print("Saving game progress player 1 turn");
+            SaveSystem.SavePlayer(player1.PositionIndex, player2.PositionIndex, true);
+        }
+        else if(gameState == GameState.Player2Turn)
+        { 
+            print("Saving game progress player 2 turn"); 
+            SaveSystem.SavePlayer(player1.PositionIndex, player2.PositionIndex, false);
+        }
+        else
+        {
+            print("Game is not in progress");
+        }
+    }
+
+    public bool LoadGameProgress()
+    {
+        PlayerData playerData = SaveSystem.LoadPlayer();
+        if (playerData == null)
+        {
+            // Player hasn't save anything yet
+            return false;
+        }
+        print("Loading game progress");
+        player1.PositionIndex = playerData.player1PositionIndex;
+        player2.PositionIndex = playerData.player2PositionIndex;
+        player1.transform.position = gameBoard.wayPoints[player1.PositionIndex].position;
+        player2.transform.position = gameBoard.wayPoints[player2.PositionIndex].position;
+        if (playerData.isPlayerOneTurn)
+        {
+            print("set game to player 2 turn");
+            gameState = GameState.Player2Turn;
+        }
+        else
+        { 
+            print("set game to player 1 turn");
+            gameState = GameState.Player1Turn;
+        }
+
+        return true;
+    }
+
+    public void PlayMiniGame(int sceneIndex)
+    {
+        SaveGameProgress();
+        SceneManager.LoadScene(sceneIndex);
+    }
+
+    private void OnApplicationQuit()
+    {
+        SaveSystem.DeleteSaveFile();
+    }
 }
 
 public enum GameState{Preparing, Player1Turn, Player2Turn, GameOver}

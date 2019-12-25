@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82e062f94f72be14eb3d5a1c60f37cb4, type: 3}
   m_Name: GameTile1
   m_EditorClassIdentifier: 
-  positionIndex: 2
+  positionIndex: 1
   gameSceneIndex: 2
