@@ -1,11 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    // To indicate whether the player is moving or standing still
+    public PlayerState playerState = PlayerState.Idle;
+    
+    // To indicate which direction the player is moving to
+    public PlayerMovingDirection playerMovingDirection = PlayerMovingDirection.Right;
+    
+    
+    
     private GameBoard _gameBoard;
-    public float timeToMoveOneTile = 1f;
+    
+    [Tooltip("How much time for the player to move one tile")]
+    public float timeToMoveOneTile = 1f;    
 
     public int PositionIndex { get; set; }
     
@@ -16,16 +27,11 @@ public class Player : MonoBehaviour
         PositionIndex = 0;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    
     public void MoveRandomly()    // player move because of dice rolling
     {
         int targetPositionIndex = PositionIndex + Random.Range(1, 7);
-        
+
+        playerState = PlayerState.Moving;
         StartCoroutine(MoveForward(targetPositionIndex));
         
     }
@@ -49,6 +55,11 @@ public class Player : MonoBehaviour
         {
             StartCoroutine(MoveGeneral(transform, _gameBoard.PlayerOnSnakeOrLadder(PositionIndex), 2));
         }
+        else
+        {
+            playerState = PlayerState.Idle;
+        }
+
     }
     
     /// <summary>
@@ -60,7 +71,24 @@ public class Player : MonoBehaviour
 
     private IEnumerator MoveOneTile(Transform playerTransform, float timeToMove)    // player movement implementation
     {
-        var curentPos = playerTransform.position;
+        Vector3 curentPos = playerTransform.position;
+        if (curentPos.x<_gameBoard.wayPoints[PositionIndex].position.x)
+        {
+            playerMovingDirection = PlayerMovingDirection.Right;
+        }
+        if (curentPos.x>_gameBoard.wayPoints[PositionIndex].position.x)
+        {
+            playerMovingDirection = PlayerMovingDirection.Left;
+        }
+        if (curentPos.y<_gameBoard.wayPoints[PositionIndex].position.y)
+        {
+            playerMovingDirection = PlayerMovingDirection.Up;
+        }
+        if (curentPos.y>_gameBoard.wayPoints[PositionIndex].position.y)    // If case won't be used since players can't move down on their own
+        {
+            playerMovingDirection = PlayerMovingDirection.Down;
+        }
+        
         var t = 0f;
         while (t < 1)
         {
@@ -73,6 +101,7 @@ public class Player : MonoBehaviour
     
     private IEnumerator MoveGeneral(Transform playerTransform,int destinationIndex, float timeToMove)    // player movement implementation
     {
+        playerState = PlayerState.Moving;
         var curentPos = playerTransform.position;
         var t = 0f;
         while (t < 1)
@@ -81,6 +110,7 @@ public class Player : MonoBehaviour
             transform.position = Vector3.Lerp(curentPos, _gameBoard.wayPoints[destinationIndex].position, t);
             yield return null;
         }    
+        playerState = PlayerState.Idle;
         
     }
 
@@ -100,3 +130,7 @@ public class Player : MonoBehaviour
         
     }
 }
+
+public enum PlayerState{ Moving, Idle }
+public enum PlayerMovingDirection { Left, Right, Up, Down}
+

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioName: Bgm
   audioClip: {fileID: 8300000, guid: 256118c7a53dcd44c978b29ffd9c60ec, type: 3}
-  volume: 1
+  volume: 0.242
   pitch: 1
   loop: 1
   source: {fileID: 0}

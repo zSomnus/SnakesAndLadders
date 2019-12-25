@@ -42,8 +42,12 @@ public class GameManager : MonoBehaviour
         switch (gameState)
         {
             case GameState.Player1Turn:
-                if (Input.GetKeyDown(KeyCode.A))
+                if (Input.GetKeyDown(KeyCode.A))    // When player rolls the dice
                 {
+                    if (player2.playerState == PlayerState.Moving)    // Check if the other player is moving
+                    {
+                        return;    // If yes, wait for it to finish moving
+                    }
                     player1.MoveRandomly();
                     if (!CheckIfAnyoneWin())
                     {
@@ -55,6 +59,10 @@ public class GameManager : MonoBehaviour
             case GameState.Player2Turn:
                 if (Input.GetKeyDown(KeyCode.A))
                 {
+                    if (player1.playerState == PlayerState.Moving)    // Check if the other player is moving
+                    {
+                        return;    // If yes, wait for it to finish moving
+                    }
                     player2.MoveRandomly();
                     if (!CheckIfAnyoneWin())
                     {
