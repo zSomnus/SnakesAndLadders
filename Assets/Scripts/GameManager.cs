@@ -71,18 +71,16 @@ public class GameManager : MonoBehaviour
                 // }
                 if (miniGameData.state == 1)    // Success
                 {
-                    print($"Player {miniGameData.playerIndex} needs to move forward {miniGameData.tileNum} tiles");
                     MoveMiniGamePlayerForCertainTile(miniGameData.tileNum);
                 }
                 else if(miniGameData.state == 2)    // Failure
                 {
-                    print($"Player {miniGameData.playerIndex} needs to move backwards {miniGameData.tileNum} tiles");                    MoveMiniGamePlayerForCertainTile(miniGameData.tileNum);
                     MoveMiniGamePlayerForCertainTile(-miniGameData.tileNum);
                 }
             }
             else
             {
-                Debug.LogWarning("There is no mini game data");
+                Debug.LogWarning("There is no mini game data yet (Ignore it if this shows in the beginning of the game)");
             }
         }
         

@@ -41,15 +41,20 @@ public class Player : MonoBehaviour
     
     public void MoveCertainTiles(int tile)    // player move because of dice rolling
     {
+        print("Move " + tile + " tiles");
         int targetPositionIndex = PositionIndex + tile;
 
         playerState = PlayerState.Moving;
         if (tile > 0)
         {
+            StopAllCoroutines();
+
             StartCoroutine(MoveForward(targetPositionIndex));
         }
         else
         {
+            StopAllCoroutines();
+
             StartCoroutine(MoveBackward(targetPositionIndex));
         }
         
@@ -107,6 +112,9 @@ public class Player : MonoBehaviour
         {
             targetPositionIndex = 0;
         }
+
+        print("Move backward to the tile index " + targetPositionIndex);
+
         while (PositionIndex > targetPositionIndex)
         {
             PositionIndex--;
