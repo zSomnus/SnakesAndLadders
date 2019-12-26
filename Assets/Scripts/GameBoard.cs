@@ -11,11 +11,19 @@ public class GameBoard : MonoBehaviour
 {
     public Transform[] wayPoints;
 
+    // List to store waypoints
+    public List<Transform> wayPointList;
+
     public Snake[] snakes;
 
     public Ladder[] ladders;
 
     public GameTile[] gameTiles;
+
+    private void Start()
+    {
+        GetWayPoints();
+    }
 
     /// <summary>
     /// Check if player needs to fall down to a tile
@@ -72,7 +80,19 @@ public class GameBoard : MonoBehaviour
         return -1;
     }
     
-    
+    // Add every transform that has tag "Tile" to the waypoints array
+    private void GetWayPoints()
+    {
+        foreach(var child in GetComponentsInChildren<Transform>())
+        {
+            if(child.tag == "Tile")
+            {
+                wayPointList.Add(child.transform);
+            }
+        }
+
+        wayPoints = wayPointList.ToArray();
+    }
     
     
 
