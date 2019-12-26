@@ -21,6 +21,7 @@
           <e p="MultipleTargetCamera.cs" t="Include" />
           <e p="Player.cs" t="Include" />
           <e p="PlayerAnimatonUpdater.cs" t="Include" />
+          <e p="PlayerPositionChecker.cs" t="Include" />
           <e p="SaveAndLoad" t="Include">
             <e p="MainGameData.cs" t="Include" />
             <e p="MiniGameData.cs" t="Include" />
