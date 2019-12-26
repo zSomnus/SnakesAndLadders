@@ -6,8 +6,9 @@ using UnityEngine.SceneManagement;
 [CreateAssetMenu(fileName = "GameTile", menuName = "GameBoardItem/GameTile")]
 public class GameTile : ScriptableObject
 {
-    // Where is the tile
+    // Where should this tile sit on the map, (0 is the bottom left corner)    see the image "GameBoardWayPoints" under the project directory to check details
     public int positionIndex;
 
+    // The scene index should this game tile load
     public int gameSceneIndex;
 }

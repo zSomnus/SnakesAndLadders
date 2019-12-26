@@ -43,6 +43,22 @@ public class GameManager : MonoBehaviour
         {
             gameState = GameState.Player1Turn;
         }
+        else
+        {
+            MiniGameData miniGameData = SaveSystem.LoadMiniGameData();
+            if (miniGameData != null)
+            {
+
+                if (miniGameData.isSucceeded)
+                {
+                    print("Player has won the mini game");
+                }
+                else
+                {
+                    print("Player has lost the mini game");
+                }
+            }
+        }
         
     }
 
@@ -125,18 +141,18 @@ public class GameManager : MonoBehaviour
 
     public bool LoadGameProgress()
     {
-        PlayerData playerData = SaveSystem.LoadPlayer();
-        if (playerData == null)
+        MainGameData mainGameData = SaveSystem.LoadPlayer();
+        if (mainGameData == null)
         {
             // Player hasn't save anything yet
             return false;
         }
         print("Loading game progress");
-        player1.PositionIndex = playerData.player1PositionIndex;
-        player2.PositionIndex = playerData.player2PositionIndex;
+        player1.PositionIndex = mainGameData.player1PositionIndex;
+        player2.PositionIndex = mainGameData.player2PositionIndex;
         player1.transform.position = gameBoard.wayPoints[player1.PositionIndex].position;
         player2.transform.position = gameBoard.wayPoints[player2.PositionIndex].position;
-        if (playerData.isPlayerOneTurn)
+        if (mainGameData.isPlayerOneTurn)
         {
             print("set game to player 2 turn");
             gameState = GameState.Player2Turn;
@@ -149,6 +165,8 @@ public class GameManager : MonoBehaviour
 
         return true;
     }
+
+
 
     public void PlayMiniGame(int sceneIndex)
     {

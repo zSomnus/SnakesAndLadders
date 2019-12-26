@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class TestBackButton : MonoBehaviour
+public class MainSceneLoader : MonoBehaviour
 {
-
-
-    public void LoadMainGame()
+    
+    public void LoadMainScene(bool isSucceeded)
     {
+        SaveSystem.SaveMiniGameData(isSucceeded);
+        
         SceneManager.LoadScene(1);
     }
+    
 
 }

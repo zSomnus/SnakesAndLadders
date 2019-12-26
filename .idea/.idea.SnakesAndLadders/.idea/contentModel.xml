@@ -18,14 +18,15 @@
           <e p="Player.cs" t="Include" />
           <e p="PlayerAnimatonUpdater.cs" t="Include" />
           <e p="SaveAndLoad" t="Include">
-            <e p="PlayerData.cs" t="Include" />
+            <e p="MainGameData.cs" t="Include" />
+            <e p="MiniGameData.cs" t="Include" />
             <e p="SaveSystem.cs" t="Include" />
           </e>
           <e p="Snake.cs" t="Include" />
           <e p="Sound.cs" t="Include" />
         </e>
         <e p="TestOnly" t="Include">
-          <e p="TestBackButton.cs" t="Include" />
+          <e p="MainSceneLoader.cs" t="Include" />
         </e>
         <e p="TextMesh Pro" t="Include">
           <e p="Fonts" t="Include">

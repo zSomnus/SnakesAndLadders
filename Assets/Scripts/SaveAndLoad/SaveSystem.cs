@@ -11,12 +11,12 @@ public static class SaveSystem
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "/playerData.fun";
         FileStream stream = new FileStream(path, FileMode.Create);
-        PlayerData data = new PlayerData(playerOnePositionIndex, playerTwoPositionIndex, isPlayerOneTurn);
+        MainGameData data = new MainGameData(playerOnePositionIndex, playerTwoPositionIndex, isPlayerOneTurn);
         formatter.Serialize(stream, data);
         stream.Close();
     }
 
-    public static PlayerData LoadPlayer()
+    public static MainGameData LoadPlayer()
     {
         string path = Application.persistentDataPath + "/playerData.fun";
         if (File.Exists(path))
@@ -24,10 +24,39 @@ public static class SaveSystem
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Open);
 
-            PlayerData playerData = formatter.Deserialize(stream) as PlayerData;
+            MainGameData mainGameData = formatter.Deserialize(stream) as MainGameData;
             
             stream.Close();
-            return playerData;
+            return mainGameData;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public static void SaveMiniGameData(bool isSucceeded)
+    {
+        BinaryFormatter formatter = new BinaryFormatter();
+        string path = Application.persistentDataPath + "/MiniGameData.fun";
+        FileStream stream = new FileStream(path, FileMode.Create);
+        MiniGameData miniGameData = new MiniGameData(isSucceeded);
+        formatter.Serialize(stream, miniGameData);
+        stream.Close();
+    }
+    
+    public static MiniGameData LoadMiniGameData()
+    {
+        string path = Application.persistentDataPath + "/MiniGameData.fun";
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+
+            MiniGameData miniGameData = formatter.Deserialize(stream) as MiniGameData;
+            
+            stream.Close();
+            return miniGameData;
         }
         else
         {
@@ -37,11 +66,18 @@ public static class SaveSystem
     
     public static void DeleteSaveFile()
     {
-        string path = Application.persistentDataPath + "/playerData.fun";
-        if (File.Exists(path))
+        string mainGameDataPath = Application.persistentDataPath + "/playerData.fun";
+        string miniGameDataPath = Application.persistentDataPath + "/MiniGameData.fun";
+        if (File.Exists(mainGameDataPath))
         {
-            File.Delete(path);
+            File.Delete(mainGameDataPath);
         }
+        
+        if (File.Exists(miniGameDataPath))
+        {
+            File.Delete(miniGameDataPath);
+        }
+        
         
     }
 }
