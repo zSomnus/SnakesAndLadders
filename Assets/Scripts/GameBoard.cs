@@ -22,7 +22,7 @@ public class GameBoard : MonoBehaviour
 
     private void Start()
     {
-        GetWayPoints();
+        //GetWayPoints();
     }
 
     /// <summary>
