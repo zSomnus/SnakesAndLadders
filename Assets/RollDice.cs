@@ -31,7 +31,10 @@ public class RollDice : MonoBehaviour
     {
         points = Random.Range(1, 7);
         pointTxt = points.ToString();
-        Debug.Log(pointTxt);
-        GameObject.Find("DiceButton").GetComponentInChildren<Text>().text = pointTxt;
+        GetComponentInChildren<Text>().text = pointTxt;
+    }
+    public int GetPoints()
+    {
+        return this.points;
     }
 }
