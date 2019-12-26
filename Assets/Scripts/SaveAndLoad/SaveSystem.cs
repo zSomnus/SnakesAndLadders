@@ -35,12 +35,12 @@ public static class SaveSystem
         }
     }
 
-    public static void SaveMiniGameData(bool isSucceeded)
+    public static void SaveMiniGameData(int state, int playerIndex, int tileNum)
     {
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "/MiniGameData.fun";
         FileStream stream = new FileStream(path, FileMode.Create);
-        MiniGameData miniGameData = new MiniGameData(isSucceeded);
+        MiniGameData miniGameData = new MiniGameData(state, playerIndex, tileNum);
         formatter.Serialize(stream, miniGameData);
         stream.Close();
     }

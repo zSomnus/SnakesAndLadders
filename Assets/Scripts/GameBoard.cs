@@ -56,7 +56,7 @@ public class GameBoard : MonoBehaviour
     /// </summary>
     /// <param name="player"></param>
     /// <returns>Return the game scene the player to go to, if there is not game tile, return -1</returns>
-    public int CheckIfPlayerOnGameTile(Player player)
+    public GameTile CheckIfPlayerOnGameTile(Player player)
     {
         if (gameTiles.Length > 0)
         {
@@ -64,12 +64,12 @@ public class GameBoard : MonoBehaviour
             {
                 if (gameTile.positionIndex == player.PositionIndex)
                 {
-                    return gameTile.gameSceneIndex;
+                    return gameTile;
                 }
             }  
         }
 
-        return -1;
+        return null;
     }
     
     

@@ -31,6 +31,7 @@ public class GameUiManager : MonoBehaviour
             player1RollButton.SetActive(false);
         }
 
+        // Only update the player 2 button if it is in two player mode
         if (GameManager.Instance.gameMode == GameMode.TwoPlayers)
         {
             if (GameManager.Instance.gameState == GameState.Player2Turn && player2.playerState == PlayerState.Idle)

@@ -6,10 +6,16 @@ using UnityEngine;
 [Serializable]
 public class MiniGameData
 {
-    public bool isSucceeded;
+    public int state;
+    public int playerIndex;
+    public int tileNum;
 
-    public MiniGameData(bool isSucceeded)
+    public MiniGameData(int miniGameState, int playerIndex, int tileNum)
     {
-        this.isSucceeded = isSucceeded;
+        this.state = miniGameState;
+        this.playerIndex = playerIndex;
+        this.tileNum = tileNum;
     }
 }
+
+public enum MiniGameState{ Pending, Success, Failure}

@@ -67,9 +67,9 @@ public class Player : MonoBehaviour
                 StartCoroutine(Climb(transform, _gameBoard.PlayerOnSnakeOrLadder(PositionIndex), 2));
             }
         }
-        else if (_gameBoard.CheckIfPlayerOnGameTile(this)>= 0)
+        else if (_gameBoard.CheckIfPlayerOnGameTile(this) != null)
         {
-            GameManager.Instance.PlayMiniGame(_gameBoard.CheckIfPlayerOnGameTile(this));
+            GameManager.Instance.PlayMiniGame(_gameBoard.CheckIfPlayerOnGameTile(this), this);
         }
         else
         {

@@ -17,7 +17,11 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; private set; }
     
+    
+    
     // Event
+    public delegate void MiniGameDelegate(Player player);
+    public event  MiniGameDelegate onMiniGameFinished;
 
     
 
@@ -50,14 +54,17 @@ public class GameManager : MonoBehaviour
             MiniGameData miniGameData = SaveSystem.LoadMiniGameData();
             if (miniGameData != null)
             {
-
-                if (miniGameData.isSucceeded)
+                if (miniGameData.playerIndex == 1 && gameMode == GameMode.OnePlayer)    // if player plays the mini game
                 {
-                    print("Player has won the mini game");
+                    RollDiceAndMovePlayer();
                 }
-                else
+                if ((MiniGameState)miniGameData.state == MiniGameState.Success)
                 {
-                    print("Player has lost the mini game");
+                    print($"Player {miniGameData.playerIndex} has won the mini game");
+                }
+                else if((MiniGameState)miniGameData.state == MiniGameState.Failure)
+                {
+                    print("Player {miniGameData.playerIndex} has lost the mini game");
                 }
             }
         }
@@ -162,19 +169,16 @@ public class GameManager : MonoBehaviour
             // Player hasn't save anything yet
             return false;
         }
-        print("Loading game progress");
         player1.PositionIndex = mainGameData.player1PositionIndex;
         player2.PositionIndex = mainGameData.player2PositionIndex;
         player1.transform.position = gameBoard.wayPoints[player1.PositionIndex].position;
         player2.transform.position = gameBoard.wayPoints[player2.PositionIndex].position;
         if (mainGameData.isPlayerOneTurn)
         {
-            print("set game to player 2 turn");
             gameState = GameState.Player2Turn;
         }
         else
         { 
-            print("set game to player 1 turn");
             gameState = GameState.Player1Turn;
         }
 
@@ -192,10 +196,10 @@ public class GameManager : MonoBehaviour
 
 
 
-    public void PlayMiniGame(int sceneIndex)
+    public void PlayMiniGame(GameTile gameTile, Player player)
     {
-        SaveGameProgress();
-        SceneManager.LoadScene(sceneIndex);
+        SaveSystem.SaveMiniGameData((int)MiniGameState.Pending, player.playerIndex, gameTile.tileNum);
+        LevelLoader.Instance.LoadMiniGame(gameTile.gameSceneIndex);
     }
 
     private void OnApplicationQuit()
