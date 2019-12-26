@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     
     
     public GameState gameState;
+    public GameMode gameMode;
 
     public static GameManager Instance { get; private set; }
     
@@ -38,6 +39,7 @@ public class GameManager : MonoBehaviour
         
         player1.onPlayerMovementFinished += ToggleGameState;
         player2.onPlayerMovementFinished += ToggleGameState;
+        player1.onPlayerMovementFinished += MoveAi;
         // Preparation
         if (!LoadGameProgress())
         {
@@ -125,13 +127,26 @@ public class GameManager : MonoBehaviour
     {
         if (gameState == GameState.Player1Turn)
         {
-            print("Saving game progress player 1 turn");
-            SaveSystem.SavePlayer(player1.PositionIndex, player2.PositionIndex, true);
+            if (gameMode == GameMode.OnePlayer)
+            {
+                SaveSystem.SavePlayer(player1.PositionIndex, player2.PositionIndex, true, 1);
+            }
+            else
+            {
+                SaveSystem.SavePlayer(player1.PositionIndex, player2.PositionIndex, true, 2);
+
+            }
         }
         else if(gameState == GameState.Player2Turn)
-        { 
-            print("Saving game progress player 2 turn"); 
-            SaveSystem.SavePlayer(player1.PositionIndex, player2.PositionIndex, false);
+        {
+            if (gameMode == GameMode.OnePlayer)
+            {
+                SaveSystem.SavePlayer(player1.PositionIndex, player2.PositionIndex, false, 1);
+            }
+            else
+            {
+                SaveSystem.SavePlayer(player1.PositionIndex, player2.PositionIndex, false,2);
+            }
         }
         else
         {
@@ -163,6 +178,15 @@ public class GameManager : MonoBehaviour
             gameState = GameState.Player1Turn;
         }
 
+        if (mainGameData.playerNum == 1)
+        {
+            gameMode = GameMode.OnePlayer;
+        }
+        else if (mainGameData.playerNum == 2)
+        {
+            gameMode = GameMode.TwoPlayers;
+        }
+
         return true;
     }
 
@@ -178,7 +202,22 @@ public class GameManager : MonoBehaviour
     {
         SaveSystem.DeleteSaveFile();
     }
+
+    public void MoveAi(Player player)
+    {
+        if (player.playerIndex == 1 && gameMode == GameMode.OnePlayer)    // If the player who just stop the movement is player1
+        {
+            StartCoroutine(AiThinkAndMove());
+        }
+    }
+
+    IEnumerator AiThinkAndMove()
+    {
+        yield return new WaitForSeconds(2);
+        RollDiceAndMovePlayer();
+    }
 }
 
 public enum GameState{Preparing, Player1Turn, Player2Turn, GameOver}
+public enum GameMode{OnePlayer, TwoPlayers}
 

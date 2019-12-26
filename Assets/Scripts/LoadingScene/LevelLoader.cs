@@ -12,20 +12,21 @@ public class LevelLoader : MonoBehaviour
     public TextMeshProUGUI progressText;
     public float timeWaitBeforeLoading = 1;
     
-    public void LoadLevel(int sceneIndex)
+    public void LoadGame(int playerNum)
     {
-        StartCoroutine(LoadAsynchronously(sceneIndex));
+        SaveSystem.SavePlayer(0,0,false,playerNum);
+
+        StartCoroutine(LoadAsynchronously(1));
     }
 
     IEnumerator LoadAsynchronously(int sceneIndex)
     {
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneIndex);
         loadingScreen.SetActive(true);
-        // asyncOperation.allowSceneActivation = false;
+        asyncOperation.allowSceneActivation = false;
         while (!asyncOperation.isDone)
         {
             float progress = Mathf.Clamp01(asyncOperation.progress / .9f);
-            asyncOperation.allowSceneActivation = false;
             slider.value = progress;
             progressText.text = (int)(progress*100) + "%"; 
             if (progress >= 1)

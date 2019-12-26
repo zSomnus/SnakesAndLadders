@@ -6,12 +6,12 @@ using UnityEngine;
 
 public static class SaveSystem
 {
-    public static void SavePlayer(int playerOnePositionIndex, int playerTwoPositionIndex, bool isPlayerOneTurn)
+    public static void SavePlayer(int playerOnePositionIndex, int playerTwoPositionIndex, bool isPlayerOneTurn, int playerNum)
     {
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "/playerData.fun";
         FileStream stream = new FileStream(path, FileMode.Create);
-        MainGameData data = new MainGameData(playerOnePositionIndex, playerTwoPositionIndex, isPlayerOneTurn);
+        MainGameData data = new MainGameData(playerOnePositionIndex, playerTwoPositionIndex, isPlayerOneTurn, playerNum);
         formatter.Serialize(stream, data);
         stream.Close();
     }

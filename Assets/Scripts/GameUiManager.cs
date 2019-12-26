@@ -30,15 +30,22 @@ public class GameUiManager : MonoBehaviour
         {
             player1RollButton.SetActive(false);
         }
-        
-        if (GameManager.Instance.gameState == GameState.Player2Turn && player2.playerState == PlayerState.Idle)
-        { 
-            player2RollButton.SetActive(true);
-        }
-        else
+
+        if (GameManager.Instance.gameMode == GameMode.TwoPlayers)
         {
-            player2RollButton.SetActive(false);
+            if (GameManager.Instance.gameState == GameState.Player2Turn && player2.playerState == PlayerState.Idle)
+            { 
+                player2RollButton.SetActive(true);
+            }
+            else
+            {
+                player2RollButton.SetActive(false);
+            }
+
         }
+        
+        
+        
     }
     
 }
