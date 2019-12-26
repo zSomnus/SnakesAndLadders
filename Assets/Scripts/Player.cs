@@ -38,6 +38,22 @@ public class Player : MonoBehaviour
         StartCoroutine(MoveForward(targetPositionIndex));
         
     }
+    
+    public void MoveCertainTiles(int tile)    // player move because of dice rolling
+    {
+        int targetPositionIndex = PositionIndex + tile;
+
+        playerState = PlayerState.Moving;
+        if (tile > 0)
+        {
+            StartCoroutine(MoveForward(targetPositionIndex));
+        }
+        else
+        {
+            StartCoroutine(MoveBackward(targetPositionIndex));
+        }
+        
+    }
 
     /// <summary>
     /// Move the player for X tiles forward
@@ -58,25 +74,9 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(timeToMoveOneTile);
         }
 
-        // if (_gameBoard.PlayerOnSnakeOrLadder(PositionIndex) >= 0)    // If player is on a snake or ladder tile
-        // {
-        //     if (_gameBoard.PlayerOnSnakeOrLadder(PositionIndex) < PositionIndex)    // player is falling
-        //     {
-        //         
-        //         StartCoroutine(Fall(transform, _gameBoard.PlayerOnSnakeOrLadder(PositionIndex), 2));
-        //         
-        //     }
-        //     else // player is climbing
-        //     {
-        //         StartCoroutine(Climb(transform, _gameBoard.PlayerOnSnakeOrLadder(PositionIndex), 2));
-        //     }
-        // }
-        // else if (_gameBoard.CheckIfPlayerOnGameTile(this) != null)
-        // {
-        //     GameManager.Instance.PlayMiniGame(_gameBoard.CheckIfPlayerOnGameTile(this), this);
-        // }
         Snake snakeTile = PlayerPositionChecker.isPlayerOnSnakeHeadTile(this);
         Ladder ladderTile = PlayerPositionChecker.isPlayerOnLadderBottomTile(this);
+        GameTile gameTile = PlayerPositionChecker.isPlayerOnGameTile(this);
         if (snakeTile)
         {
             StartCoroutine(Fall(transform, snakeTile.endIndex, 2));
@@ -85,13 +85,59 @@ public class Player : MonoBehaviour
         {
             StartCoroutine(Climb(transform, ladderTile.endIndex, 2));
         }
-        else if (PlayerPositionChecker.isPlayerOnGameTile(this) != null)
+        else // Player doesn't need to move anymore
         {
-            GameManager.Instance.PlayMiniGame(PlayerPositionChecker.isPlayerOnGameTile(this), this);
+            playerState = PlayerState.Idle;
+            if (gameTile)
+            {
+                SaveSystem.SaveMiniGameData((int) MiniGameState.Pending, playerIndex, gameTile.tileNum);
+                LevelLoader.Instance.LoadMiniGame(gameTile.gameSceneIndex);
+            }
+        }
+
+        if (!snakeTile && !ladderTile && !gameTile)
+        {
+            onPlayerMovementFinished?.Invoke(this);
+        }
+    }
+    
+    private IEnumerator MoveBackward(int targetPositionIndex)
+    {
+        if (targetPositionIndex < 0)
+        {
+            targetPositionIndex = 0;
+        }
+        while (PositionIndex > targetPositionIndex)
+        {
+            PositionIndex--;
+            StartCoroutine(MoveOneTile(transform, timeToMoveOneTile));
+            
+            yield return new WaitForSeconds(timeToMoveOneTile);
+        }
+
+        Snake snakeTile = PlayerPositionChecker.isPlayerOnSnakeHeadTile(this);
+        Ladder ladderTile = PlayerPositionChecker.isPlayerOnLadderBottomTile(this);
+        GameTile gameTile = PlayerPositionChecker.isPlayerOnGameTile(this);
+        if (snakeTile)
+        {
+            StartCoroutine(Fall(transform, snakeTile.endIndex, 2));
+        }
+        else if (ladderTile)
+        {
+            StartCoroutine(Climb(transform, ladderTile.endIndex, 2));
+        }
+        else // Player doesn't need to move anymore
+        {
+            playerState = PlayerState.Idle;
+        }
+        
+        if (gameTile)
+        {
+            SaveSystem.SaveMiniGameData((int)MiniGameState.Pending, playerIndex, gameTile.tileNum);
+            LevelLoader.Instance.LoadMiniGame(gameTile.gameSceneIndex);
         }
         else
         {
-            playerState = PlayerState.Idle;
             onPlayerMovementFinished?.Invoke(this);
         }
 
@@ -137,7 +183,7 @@ public class Player : MonoBehaviour
     private IEnumerator Fall(Transform playerTransform,int destinationIndex, float timeToMove)    // player movement implementation
     {
         // Update data
-        playerState = PlayerState.Falling;
+        // playerState = PlayerState.Falling;
         PositionIndex = destinationIndex;
 
         // Update graphics
@@ -157,7 +203,7 @@ public class Player : MonoBehaviour
     private IEnumerator Climb(Transform playerTransform,int destinationIndex, float timeToMove)    // player movement implementation
     {
         // Update data
-        playerState = PlayerState.Climbing;
+        // playerState = PlayerState.Climbing;
         PositionIndex = destinationIndex; 
         
         // Update graphics

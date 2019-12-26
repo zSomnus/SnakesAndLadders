@@ -52,20 +52,37 @@ public class GameManager : MonoBehaviour
         else
         {
             MiniGameData miniGameData = SaveSystem.LoadMiniGameData();
+            
+            
             if (miniGameData != null)
             {
-                if (miniGameData.playerIndex == 1 && gameMode == GameMode.OnePlayer)    // if player plays the mini game
+                if (miniGameData.playerIndex == 1)
                 {
-                    RollDiceAndMovePlayer();
+                    gameState = GameState.Player1Turn;
                 }
-                if ((MiniGameState)miniGameData.state == MiniGameState.Success)
+                else if (miniGameData.playerIndex == 2)
                 {
-                    print($"Player {miniGameData.playerIndex} has won the mini game");
+                    gameState = GameState.Player2Turn;
                 }
-                else if((MiniGameState)miniGameData.state == MiniGameState.Failure)
+                
+                // if (miniGameData.playerIndex == 1 && gameMode == GameMode.OnePlayer)    // if player plays the mini game
+                // {
+                    // RollDiceAndMovePlayer();
+                // }
+                if (miniGameData.state == 1)    // Success
                 {
-                    print("Player {miniGameData.playerIndex} has lost the mini game");
+                    print($"Player {miniGameData.playerIndex} needs to move forward {miniGameData.tileNum} tiles");
+                    MoveMiniGamePlayerForCertainTile(miniGameData.tileNum);
                 }
+                else if(miniGameData.state == 2)    // Failure
+                {
+                    print($"Player {miniGameData.playerIndex} needs to move backwards {miniGameData.tileNum} tiles");                    MoveMiniGamePlayerForCertainTile(miniGameData.tileNum);
+                    MoveMiniGamePlayerForCertainTile(-miniGameData.tileNum);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("There is no mini game data");
             }
         }
         
@@ -97,10 +114,41 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+    
+    public void MoveMiniGamePlayerForCertainTile(int tile)
+    {
+        switch (gameState)    // only accept player input if it is in player 1 turn or player 2 turn
+        {
+            case GameState.Player1Turn:
+                if (player2.playerState == PlayerState.Moving) // Check if the other player is moving
+                {
+                    return;
+                }
 
+                player1.MoveCertainTiles(tile);
+                
+
+                break;
+            case GameState.Player2Turn:
+                if (player1.playerState == PlayerState.Moving) // Check if the other player is moving
+                {
+                    return;
+                }
+
+                player2.MoveCertainTiles(tile);
+                
+
+                break;
+        }
+    }
+
+    /// <summary>
+    /// If previous player is player1, then change the state to Player2Turn, vice versa.
+    /// </summary>
+    /// <param name="previousPlayer"></param>
     public void ToggleGameState(Player previousPlayer)
     {
-        if (!CheckIfAnyoneWin())
+        if (!isTherePlayerWin())
         {
             if (previousPlayer.playerIndex == 1)
             {
@@ -125,40 +173,31 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private bool CheckIfAnyoneWin()
+    /// <summary>
+    /// Return the player who wins the game, return none if there isn't any
+    /// </summary>
+    /// <returns></returns>
+    private Player isTherePlayerWin()
     {
-        return player1.ReachEnd() || player2.ReachEnd();
+        if (player1.ReachEnd())
+        {
+            return player1;
+        }
+        else if (player2.ReachEnd())
+        {
+            return player2;
+        }
+        else
+        {
+            return null;
+        }
     }
 
     public void SaveGameProgress()
     {
-        if (gameState == GameState.Player1Turn)
-        {
-            if (gameMode == GameMode.OnePlayer)
-            {
-                SaveSystem.SavePlayer(player1.PositionIndex, player2.PositionIndex, true, 1);
-            }
-            else
-            {
-                SaveSystem.SavePlayer(player1.PositionIndex, player2.PositionIndex, true, 2);
-
-            }
-        }
-        else if(gameState == GameState.Player2Turn)
-        {
-            if (gameMode == GameMode.OnePlayer)
-            {
-                SaveSystem.SavePlayer(player1.PositionIndex, player2.PositionIndex, false, 1);
-            }
-            else
-            {
-                SaveSystem.SavePlayer(player1.PositionIndex, player2.PositionIndex, false,2);
-            }
-        }
-        else
-        {
-            print("Game is not in progress");
-        }
+        bool isPlayerOneTurn = gameState == GameState.Player1Turn ? true : false;
+        int playerNum = gameMode == GameMode.OnePlayer ? 1 : 2;
+        SaveSystem.SavePlayer(player1.PositionIndex, player2.PositionIndex, isPlayerOneTurn, playerNum);
     }
 
     public bool LoadGameProgress()
@@ -173,34 +212,20 @@ public class GameManager : MonoBehaviour
         player2.PositionIndex = mainGameData.player2PositionIndex;
         player1.transform.position = gameBoard.wayPoints[player1.PositionIndex].position;
         player2.transform.position = gameBoard.wayPoints[player2.PositionIndex].position;
-        if (mainGameData.isPlayerOneTurn)
+        gameState = mainGameData.isPlayerOneTurn ? GameState.Player2Turn : GameState.Player1Turn;
+        switch (mainGameData.playerNum)
         {
-            gameState = GameState.Player2Turn;
-        }
-        else
-        { 
-            gameState = GameState.Player1Turn;
-        }
-
-        if (mainGameData.playerNum == 1)
-        {
-            gameMode = GameMode.OnePlayer;
-        }
-        else if (mainGameData.playerNum == 2)
-        {
-            gameMode = GameMode.TwoPlayers;
+            case 1:
+                gameMode = GameMode.OnePlayer;
+                break;
+            case 2:
+                gameMode = GameMode.TwoPlayers;
+                break;
         }
 
         return true;
     }
-
-
-
-    public void PlayMiniGame(GameTile gameTile, Player player)
-    {
-        SaveSystem.SaveMiniGameData((int)MiniGameState.Pending, player.playerIndex, gameTile.tileNum);
-        LevelLoader.Instance.LoadMiniGame(gameTile.gameSceneIndex);
-    }
+    
 
     private void OnApplicationQuit()
     {
