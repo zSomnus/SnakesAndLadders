@@ -13,6 +13,9 @@
           <e p="GameTile.cs" t="Include" />
           <e p="GameUiManager.cs" t="Include" />
           <e p="Ladder.cs" t="Include" />
+          <e p="LoadingScene" t="Include">
+            <e p="LevelLoader.cs" t="Include" />
+          </e>
           <e p="MainMenu.cs" t="Include" />
           <e p="MultipleTargetCamera.cs" t="Include" />
           <e p="Player.cs" t="Include" />

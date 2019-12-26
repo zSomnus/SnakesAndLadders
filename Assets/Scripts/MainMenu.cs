@@ -8,13 +8,7 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class MainMenu : MonoBehaviour
 {
-
-
-    public void LoadGame(int sceneIndex)
-    {
-        SceneManager.LoadScene(sceneIndex);
-    }
-
+    
     public void ExitGame()
     {
         Application.Quit();
