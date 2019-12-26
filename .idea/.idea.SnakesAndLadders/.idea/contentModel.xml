@@ -6,6 +6,7 @@
     <e p="G:\Unity\SnakesAndLadders" t="IncludeRecursive">
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
+        <e p="SceneLoader.cs" t="Include" />
         <e p="Scripts" t="Include">
           <e p="AudioManager.cs" t="Include" />
           <e p="GameBoard.cs" t="Include" />
@@ -20,6 +21,7 @@
           <e p="MultipleTargetCamera.cs" t="Include" />
           <e p="Player.cs" t="Include" />
           <e p="PlayerAnimatonUpdater.cs" t="Include" />
+          <e p="PlayerPositionChecker.cs" t="Include" />
           <e p="SaveAndLoad" t="Include">
             <e p="MainGameData.cs" t="Include" />
             <e p="MiniGameData.cs" t="Include" />
@@ -59,6 +61,7 @@
             <e p="EmojiOne Attribution.txt" t="Include" />
           </e>
         </e>
+        <e p="TransitionPanel.cs" t="Include" />
       </e>
       <e p="obj" t="ExcludeRecursive" />
       <e p="packages" t="ExcludeRecursive" />

@@ -46,6 +46,10 @@ public class Player : MonoBehaviour
     /// <returns></returns>
     private IEnumerator MoveForward(int targetPositionIndex)
     {
+        if (targetPositionIndex > _gameBoard.wayPoints.Length - 1)
+        {
+            targetPositionIndex = _gameBoard.wayPoints.Length - 1;
+        }
         while (PositionIndex < targetPositionIndex)
         {
             PositionIndex++;
@@ -54,22 +58,36 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(timeToMoveOneTile);
         }
 
-        if (_gameBoard.PlayerOnSnakeOrLadder(PositionIndex) >= 0)    // If player is on a snake or ladder tile
+        // if (_gameBoard.PlayerOnSnakeOrLadder(PositionIndex) >= 0)    // If player is on a snake or ladder tile
+        // {
+        //     if (_gameBoard.PlayerOnSnakeOrLadder(PositionIndex) < PositionIndex)    // player is falling
+        //     {
+        //         
+        //         StartCoroutine(Fall(transform, _gameBoard.PlayerOnSnakeOrLadder(PositionIndex), 2));
+        //         
+        //     }
+        //     else // player is climbing
+        //     {
+        //         StartCoroutine(Climb(transform, _gameBoard.PlayerOnSnakeOrLadder(PositionIndex), 2));
+        //     }
+        // }
+        // else if (_gameBoard.CheckIfPlayerOnGameTile(this) != null)
+        // {
+        //     GameManager.Instance.PlayMiniGame(_gameBoard.CheckIfPlayerOnGameTile(this), this);
+        // }
+        Snake snakeTile = PlayerPositionChecker.isPlayerOnSnakeHeadTile(this);
+        Ladder ladderTile = PlayerPositionChecker.isPlayerOnLadderBottomTile(this);
+        if (snakeTile)
         {
-            if (_gameBoard.PlayerOnSnakeOrLadder(PositionIndex) < PositionIndex)    // player is falling
-            {
-                
-                StartCoroutine(Fall(transform, _gameBoard.PlayerOnSnakeOrLadder(PositionIndex), 2));
-                
-            }
-            else // player is climbing
-            {
-                StartCoroutine(Climb(transform, _gameBoard.PlayerOnSnakeOrLadder(PositionIndex), 2));
-            }
+            StartCoroutine(Fall(transform, snakeTile.endIndex, 2));
         }
-        else if (_gameBoard.CheckIfPlayerOnGameTile(this)>= 0)
+        else if (ladderTile)
         {
-            GameManager.Instance.PlayMiniGame(_gameBoard.CheckIfPlayerOnGameTile(this));
+            StartCoroutine(Climb(transform, ladderTile.endIndex, 2));
+        }
+        else if (PlayerPositionChecker.isPlayerOnGameTile(this) != null)
+        {
+            GameManager.Instance.PlayMiniGame(PlayerPositionChecker.isPlayerOnGameTile(this), this);
         }
         else
         {

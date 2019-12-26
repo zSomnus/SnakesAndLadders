@@ -11,4 +11,7 @@ public class GameTile : ScriptableObject
 
     // The scene index should this game tile load
     public int gameSceneIndex;
+
+    // The number of tile the player will move forward if he/she wins, and move backwards if he/she loses
+    public int tileNum;
 }
