@@ -28,11 +28,15 @@
           <e p="MultipleTargetCamera.cs" t="Include" />
           <e p="Player.cs" t="Include" />
           <e p="PlayerAnimatonUpdater.cs" t="Include" />
-          <e p="PlayerPositionChecker.cs" t="Include" />
+          <e p="PlayerChecker.cs" t="Include" />
           <e p="SaveAndLoad" t="Include">
             <e p="MainGameData.cs" t="Include" />
             <e p="MiniGameData.cs" t="Include" />
             <e p="SaveSystem.cs" t="Include" />
+          </e>
+          <e p="SimonSays" t="Include">
+            <e p="SimonSaysButton.cs" t="Include" />
+            <e p="SimonSaysController.cs" t="Include" />
           </e>
           <e p="Snake.cs" t="Include" />
           <e p="Sound.cs" t="Include" />

@@ -9,17 +9,7 @@ public static class SaveSystem
     
     public static void InitiateMainGameData(int playerNum)
     {
-        int[] playersPositionsIndexes;
-        if (playerNum == 1)
-        {
-            playersPositionsIndexes = new int[2];
-        }
-        else
-        {
-            playersPositionsIndexes = new int[playerNum];
-        }
-
-
+        int[] playersPositionsIndexes = new int[4];
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "/playerData.fun";
         FileStream stream = new FileStream(path, FileMode.Create);
@@ -38,18 +28,18 @@ public static class SaveSystem
         
 
         int whoseTurn = 0;
-        switch (GameManager.Instance.gameState)
+        switch (GameManager.Instance.gameTurnState)
         {
-            case GameState.Player1Turn:
+            case GameTurnState.Player1Turn:
                 whoseTurn = 0;
                 break;
-            case GameState.Player2Turn:
+            case GameTurnState.Player2Turn:
                 whoseTurn = 1;
                 break;
-            case GameState.Player3Turn:
+            case GameTurnState.Player3Turn:
                 whoseTurn = 2;
                 break;
-            case GameState.Player4Turn:
+            case GameTurnState.Player4Turn:
                 whoseTurn = 3;
                 break;
         }
@@ -118,6 +108,10 @@ public static class SaveSystem
         stream.Close();
     }
     
+    /// <summary>
+    /// Save the result of the mini game to a persistent file, and then load the main scene
+    /// </summary>
+    /// <param name="isSuccessful"></param>
     public static void UpdateMiniGameData(bool isSuccessful)
     {
         MiniGameData miniGameData = SaveSystem.LoadMiniGameData();
@@ -130,7 +124,8 @@ public static class SaveSystem
             miniGameData.state = 2;
         }
         SaveSystem.SaveMiniGameData(miniGameData.state, miniGameData.playerIndex, miniGameData.tileNum);
-        LevelLoader.Instance.LoadMainGame();
+        
+        //Always go back to the main scene after saving the mini game data
     }
 
 

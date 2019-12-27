@@ -17,6 +17,7 @@ public class LevelLoader : MonoBehaviour
     public static LevelLoader Instance;
     private void Start()
     {
+        SaveSystem.DeleteSaveFile();
         if (Instance == null)
         {
             Instance = this;

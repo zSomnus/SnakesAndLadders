@@ -75,6 +75,7 @@ public class SimonSaysController : MonoBehaviour
             if (verifyIndex == total)
             {
                 SaveSystem.UpdateMiniGameData(true);
+                LevelLoader.Instance.LoadMainGame();
             }
             else
             {
@@ -89,6 +90,7 @@ public class SimonSaysController : MonoBehaviour
         else
         {
             SaveSystem.UpdateMiniGameData(false);
+            LevelLoader.Instance.LoadMainGame();
         }
     }
 }

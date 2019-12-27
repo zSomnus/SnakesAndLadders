@@ -14,4 +14,7 @@ public class GameTile : ScriptableObject
 
     // The number of tile the player will move forward if he/she wins, and move backwards if he/she loses
     public int tileNum;
+
+    // The chance of AI succeeding in this game 
+    public float successRate;
 }
