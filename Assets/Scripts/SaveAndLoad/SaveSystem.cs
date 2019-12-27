@@ -9,38 +9,74 @@ public static class SaveSystem
     
     public static void InitiateMainGameData(int playerNum)
     {
-        int playerOnePositionIndex = 0;
-        int playerTwoPositionIndex = 0;
-        bool isPlayerOneTurn = true;
+        int[] playersPositionsIndexes = new int[playerNum];
 
-        
+
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "/playerData.fun";
         FileStream stream = new FileStream(path, FileMode.Create);
-        MainGameData data = new MainGameData(playerOnePositionIndex, playerTwoPositionIndex, isPlayerOneTurn, playerNum);
+        MainGameData data = new MainGameData(playersPositionsIndexes,0 , playerNum);
         formatter.Serialize(stream, data);
         stream.Close();
     }
     public static void SaveMainGameData()
     {
-        int playerOnePositionIndex = GameManager.Instance.player1.PositionIndex;
-        int playerTwoPositionIndex = GameManager.Instance.player2.PositionIndex;
-        bool isPlayerOneTurn = true;
-        if (GameManager.Instance.gameState == GameState.Player1Turn)
+        int[] playersPositionsIndexes = new int[GameManager.Instance.players.Length];
+        
+        for (int i = 0; i < playersPositionsIndexes.Length; i++)
         {
-            isPlayerOneTurn = true;
+             playersPositionsIndexes[i] = GameManager.Instance.players[i].PositionIndex;
         }
-        else if (GameManager.Instance.gameState == GameState.Player2Turn)
+        
+
+        int whoseTurn = 0;
+        switch (GameManager.Instance.gameState)
         {
-            isPlayerOneTurn = false;
+            case GameState.Player1Turn:
+                whoseTurn = 0;
+                break;
+            case GameState.Player2Turn:
+                whoseTurn = 1;
+                break;
+            case GameState.Player3Turn:
+                whoseTurn = 2;
+                break;
+            case GameState.Player4Turn:
+                whoseTurn = 3;
+                break;
         }
 
-        int playerNum = GameManager.Instance.gameMode == GameMode.OnePlayer ? 1 : 2;
+        int playerNum = 0;
+        switch (GameManager.Instance.gameMode)
+        {
+            case GameMode.OnePlayer:
+                playerNum = 1;
+                break;
+            case GameMode.TwoPlayers:
+                playerNum = 2;
+                break;
+            case GameMode.ThreePlayers:
+                playerNum = 3;
+                break;
+            case GameMode.FourPlayers:
+                playerNum = 4;
+                break;
+        }
         
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "/playerData.fun";
         FileStream stream = new FileStream(path, FileMode.Create);
-        MainGameData data = new MainGameData(playerOnePositionIndex, playerTwoPositionIndex, isPlayerOneTurn, playerNum);
+        MainGameData data = new MainGameData(playersPositionsIndexes, whoseTurn, playerNum);
+        formatter.Serialize(stream, data);
+        stream.Close();
+    }
+    
+    public static void SaveMainGameData(int[] playersPositionsIndexes, int whoseTurn, int playerNum)
+    {
+        BinaryFormatter formatter = new BinaryFormatter();
+        string path = Application.persistentDataPath + "/playerData.fun";
+        FileStream stream = new FileStream(path, FileMode.Create);
+        MainGameData data = new MainGameData(playersPositionsIndexes, whoseTurn, playerNum);
         formatter.Serialize(stream, data);
         stream.Close();
     }

@@ -90,16 +90,12 @@ public static class PlayerPositionChecker
 
     public static Player GetVictoryPlayer()
     {
-        Player player1 = GameManager.Instance.player1;
-        Player player2 = GameManager.Instance.player2;
-        if (IsPlayerWin(player1))
+        foreach (var player in GameManager.Instance.players)
         {
-            return player1;
-        }
-
-        if (IsPlayerWin(player2))
-        {
-            return player2;
+            if (IsPlayerWin(player))
+            {
+                return player;
+            }
         }
 
         return null;

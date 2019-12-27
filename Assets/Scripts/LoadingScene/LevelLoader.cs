@@ -29,18 +29,8 @@ public class LevelLoader : MonoBehaviour
     }
 
     public void InitiateMainGame(int playerNum)
-    {
-        if (playerNum == 1)
-        {
-            SaveSystem.InitiateMainGameData(1);
-
-        }
-        else if (playerNum == 2)
-        {
-            SaveSystem.InitiateMainGameData(2);
-
-        }
-        
+    { 
+        SaveSystem.InitiateMainGameData(playerNum);
         LoadMainGame();
 
     }
