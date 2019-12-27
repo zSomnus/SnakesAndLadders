@@ -25,6 +25,9 @@ In your mini game scene, before switching to the mainscene,
 
 I created a minigame scene called TestGameScene so you can take a look.
 
+## Testing
+Press 1 to 6 to roll whatever point you like. Press 1 to roll a 1. Press 2 to roll a 2...
+
 <i> For the graphics, you just need to add some sprites separately in the children of GameBoard. </i>
 
 It should work. If it doesn't just report the bugs to me (Soon) in discord. 

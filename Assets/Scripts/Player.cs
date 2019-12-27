@@ -41,6 +41,10 @@ public class Player : MonoBehaviour
     
     public void MoveTiles(int numOfTiles)    
     {
+        if (playerState == PlayerState.Moving)
+        {
+            return;
+        }
         int targetPositionIndex = PositionIndex + numOfTiles;
 
         StopAllCoroutines();
@@ -107,7 +111,7 @@ public class Player : MonoBehaviour
             if (gameTile)
             {
                 SaveSystem.SaveMiniGameData((int) MiniGameState.Pending, playerIndex, gameTile.tileNum);
-                GameManager.Instance.SaveGameProgress();
+
                 
                 SaveSystem.SaveMainGameData();
 
@@ -200,15 +204,6 @@ public class Player : MonoBehaviour
         
     }
 
-
-    /// <summary>
-    /// Detect if player reaches end or not
-    /// </summary>
-    /// <returns></returns>
-    public bool ReachEnd()
-    {
-        return PositionIndex == _gameBoard.wayPoints.Length - 1;
-    }
 
 }
 

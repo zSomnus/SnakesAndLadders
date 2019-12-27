@@ -60,11 +60,11 @@ public class GameManager : MonoBehaviour
             // }
             if (miniGameData.state == 1)    // Success
             {
-                MoveMiniGamePlayerForCertainTile(miniGameData.tileNum);
+                GetPlayerInTurn().MoveTiles(miniGameData.tileNum);
             }
             else if(miniGameData.state == 2)    // Failure
             {
-                MoveMiniGamePlayerForCertainTile(-miniGameData.tileNum);
+                GetPlayerInTurn().MoveTiles(-miniGameData.tileNum);
             }
         }
         else
@@ -72,6 +72,11 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("There is no mini game data yet (Ignore it if this shows in the beginning of the game)");
         }
         
+    }
+
+    private void Update()
+    {
+        GodMode();
     }
 
     public void RollDiceAndMovePlayer()
@@ -86,18 +91,48 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
-    
-    public void MoveMiniGamePlayerForCertainTile(int tile)
+
+    public void GodMode()
+    {
+        if (Input.GetKey(KeyCode.Alpha1))
+        {
+            GetPlayerInTurn().MoveTiles(1);
+        }
+        else if (Input.GetKey(KeyCode.Alpha2))
+        {
+            GetPlayerInTurn().MoveTiles(2);
+        }
+        else if (Input.GetKey(KeyCode.Alpha3))
+        {
+            GetPlayerInTurn().MoveTiles(3);
+        }
+        else if (Input.GetKey(KeyCode.Alpha4))
+        {
+            GetPlayerInTurn().MoveTiles(4);
+        }
+        else if (Input.GetKey(KeyCode.Alpha5))
+        {
+            GetPlayerInTurn().MoveTiles(5);
+        }
+        else if (Input.GetKey(KeyCode.Alpha6))
+        {
+            GetPlayerInTurn().MoveTiles(6);
+        }
+    }
+
+    private Player GetPlayerInTurn()
     {
         switch (gameState)    // only accept player input if it is in player 1 turn or player 2 turn
         {
             case GameState.Player1Turn:
-                player1.MoveTiles(tile);
+                return player1;
                 break;
             case GameState.Player2Turn:
-                player2.MoveTiles(tile);
+                return player2;
                 break;
         }
+
+        return null;
     }
 
     /// <summary>
@@ -106,7 +141,7 @@ public class GameManager : MonoBehaviour
     /// <param name="previousPlayer"></param>
     public void ToggleGameState(Player previousPlayer)
     {
-        if (!isTherePlayerWin())
+        if (!PlayerPositionChecker.GetVictoryPlayer())
         {
             if (previousPlayer.playerIndex == 1)
             {
@@ -120,42 +155,15 @@ public class GameManager : MonoBehaviour
         else
         {
             gameState = GameState.GameOver;
-            if (player1.ReachEnd())
+            if (PlayerPositionChecker.IsPlayerWin(player1))
             {
                 print("Player 1 won");
             }
-            if(player2.ReachEnd())
+            if(PlayerPositionChecker.IsPlayerWin(player2))
             {
                 print("Player 2 won");
             }
         }
-    }
-
-    /// <summary>
-    /// Return the player who wins the game, return none if there isn't any
-    /// </summary>
-    /// <returns></returns>
-    private Player isTherePlayerWin()
-    {
-        if (player1.ReachEnd())
-        {
-            return player1;
-        }
-        else if (player2.ReachEnd())
-        {
-            return player2;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public void SaveGameProgress()
-    {
-        bool isPlayerOneTurn = gameState == GameState.Player1Turn ? true : false;
-        int playerNum = gameMode == GameMode.OnePlayer ? 1 : 2;
-        SaveSystem.SaveMainGameData();
     }
 
     public bool LoadGameProgress()

@@ -78,6 +78,33 @@ public static class PlayerPositionChecker
         return null;
     }
 
+    public static bool IsPlayerWin(Player player)
+    {
+        if (player.PositionIndex == _gameBoard.wayPoints.Length - 1)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static Player GetVictoryPlayer()
+    {
+        Player player1 = GameManager.Instance.player1;
+        Player player2 = GameManager.Instance.player2;
+        if (IsPlayerWin(player1))
+        {
+            return player1;
+        }
+
+        if (IsPlayerWin(player2))
+        {
+            return player2;
+        }
+
+        return null;
+
+    }
     
     
     
