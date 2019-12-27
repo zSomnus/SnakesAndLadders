@@ -34,6 +34,10 @@
             <e p="MiniGameData.cs" t="Include" />
             <e p="SaveSystem.cs" t="Include" />
           </e>
+          <e p="SimonSays" t="Include">
+            <e p="SimonSaysButton.cs" t="Include" />
+            <e p="SimonSaysController.cs" t="Include" />
+          </e>
           <e p="Snake.cs" t="Include" />
           <e p="Sound.cs" t="Include" />
         </e>

@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     // Reference
     public Player[] players;
     public GameBoard gameBoard;
+    private Camera camera;
     
     // Enum
     public GameState gameState;
@@ -19,6 +20,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     
     // Event
+    public delegate void GamePrepareDelegate();
+    public event GamePrepareDelegate OnGamePrepareFinished;
 
     private void Awake()
     {
@@ -30,17 +33,32 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
-
-    private void Start()
-    {
+        
         // Preparation
         gameState = GameState.Preparing;
 
+        
+    }
+    
+
+    private void Start()
+    {
+        camera = Camera.main;
         LoadGameProgress();
+        InitializeCamera();
+        OnGamePrepareFinished?.Invoke();
+        
 
 
+    }
 
+    private void InitializeCamera()
+    {
+        var multipleTargetCamera = camera.GetComponent<MultipleTargetCamera>();
+        if (multipleTargetCamera != null)
+        {
+            multipleTargetCamera.UpdateCamera();
+        }
     }
 
     private void Update()
@@ -199,6 +217,7 @@ public class GameManager : MonoBehaviour
 
     /// <summary>
     /// This is used in the beginning of the GameManager to load game information to put players in place
+    /// If there is no game progress, meaning that the player hasn't started the game, then load all the player to the first tile
     /// </summary>
     /// <returns></returns>
     private bool LoadGameProgress()
@@ -207,11 +226,14 @@ public class GameManager : MonoBehaviour
 
         if (mainGameData == null)
         {
+            Debug.LogError("There is no main game data");
             // Player hasn't save anything yet
             return false;
         }
+        
+        gameMode = (GameMode) (mainGameData.playerNum-1);
 
-        if (mainGameData.playerNum == 1)
+        if (gameMode == GameMode.OnePlayer)
         {
             players = new Player[2];
         }
@@ -246,7 +268,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        gameMode = (GameMode) (mainGameData.playerNum-1);
+        
 
         for (int i = 0; i < players.Length; i++)
         {

@@ -118,6 +118,10 @@ public static class SaveSystem
         stream.Close();
     }
     
+    /// <summary>
+    /// Save the result of the mini game to a persistent file, and then load the main scene
+    /// </summary>
+    /// <param name="isSuccessful"></param>
     public static void UpdateMiniGameData(bool isSuccessful)
     {
         MiniGameData miniGameData = SaveSystem.LoadMiniGameData();
@@ -130,6 +134,8 @@ public static class SaveSystem
             miniGameData.state = 2;
         }
         SaveSystem.SaveMiniGameData(miniGameData.state, miniGameData.playerIndex, miniGameData.tileNum);
+        
+        //Always go back to the main scene after saving the mini game data
         LevelLoader.Instance.LoadMainGame();
     }
 
