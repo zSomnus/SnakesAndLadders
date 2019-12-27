@@ -38,14 +38,14 @@ public class GameManager : MonoBehaviour
         
         player1.onPlayerMovementFinished += ToggleGameState;
         player2.onPlayerMovementFinished += ToggleGameState;
-        player1.onPlayerMovementFinished += MoveAi;
+        player1.onPlayerMovementFinished += AiBeginMoving;
         // Preparation
         LoadGameProgress();
         
         MiniGameData miniGameData = SaveSystem.LoadMiniGameData();
         if (miniGameData != null)    // If the player comes back from the mini game
         {
-            if (miniGameData.playerIndex == 1)
+            if (miniGameData.playerIndex == 1)    // If the player 1 just played the mini game, it is still in player 1's turn
             {
                 gameState = GameState.Player1Turn;
             }
@@ -54,10 +54,6 @@ public class GameManager : MonoBehaviour
                 gameState = GameState.Player2Turn;
             }
             
-            // if (miniGameData.playerIndex == 1 && gameMode == GameMode.OnePlayer)    // if player plays the mini game
-            // {
-                // RollDiceAndMovePlayer();
-            // }
             if (miniGameData.state == 1)    // Success
             {
                 GetPlayerInTurn().MoveTiles(miniGameData.tileNum);
@@ -92,7 +88,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void GodMode()
+    private void GodMode()
     {
         if (Input.GetKey(KeyCode.Alpha1))
         {
@@ -139,7 +135,7 @@ public class GameManager : MonoBehaviour
     /// If previous player is player1, then change the state to Player2Turn, vice versa.
     /// </summary>
     /// <param name="previousPlayer"></param>
-    public void ToggleGameState(Player previousPlayer)
+    private void ToggleGameState(Player previousPlayer)
     {
         if (!PlayerPositionChecker.GetVictoryPlayer())
         {
@@ -166,7 +162,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public bool LoadGameProgress()
+    /// <summary>
+    /// This is used in the beginning of the GameManager to load game information to put players in place
+    /// </summary>
+    /// <returns></returns>
+    private bool LoadGameProgress()
     {
         MainGameData mainGameData = SaveSystem.LoadMainGameData();
         if (mainGameData == null)
@@ -198,15 +198,15 @@ public class GameManager : MonoBehaviour
         SaveSystem.DeleteSaveFile();
     }
 
-    public void MoveAi(Player player)
+    private void AiBeginMoving(Player player)
     {
         if (player.playerIndex == 1 && gameMode == GameMode.OnePlayer)    // If the player who just stop the movement is player1
         {
-            StartCoroutine(AiThinkAndMove());
+            StartCoroutine(AiMove());
         }
     }
 
-    IEnumerator AiThinkAndMove()
+    private IEnumerator AiMove()
     {
         yield return new WaitForSeconds(2);
         RollDiceAndMovePlayer();
