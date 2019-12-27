@@ -16,19 +16,13 @@ public class Player : MonoBehaviour
     public delegate void PlayerMovementFinishedDelegate(Player player);
     public event PlayerMovementFinishedDelegate onPlayerMovementFinished;
     
-    private GameBoard _gameBoard;
+
     
     [Tooltip("How much time for the player to move one tile")]
     public float timeToMoveOneTile = 1f;    
 
     public int PositionIndex { get; set; }
     
-    // Start is called before the first frame update
-    void Start()
-    {
-        _gameBoard = GameManager.Instance.gameBoard;
-        PositionIndex = 0;
-    }
 
     /// <summary>
     /// Move the player randomly from 1 tile to 6 tiles
@@ -63,7 +57,7 @@ public class Player : MonoBehaviour
     {
         playerState = PlayerState.Moving;
 
-        targetPositionIndex = Mathf.Clamp(targetPositionIndex, 0, _gameBoard.wayPoints.Length - 1);
+        targetPositionIndex = Mathf.Clamp(targetPositionIndex, 0, GameManager.Instance.gameBoard.wayPoints.Length - 1);
         bool movingForward = targetPositionIndex > PositionIndex ? true : false;
         if (movingForward)
         {
@@ -112,7 +106,8 @@ public class Player : MonoBehaviour
             {
                 SaveSystem.SaveMiniGameData((int) MiniGameState.Pending, playerIndex, gameTile.tileNum);
 
-                
+
+
                 SaveSystem.SaveMainGameData();
 
                 LevelLoader.Instance.LoadScene(gameTile.gameSceneIndex);
@@ -134,19 +129,19 @@ public class Player : MonoBehaviour
     private IEnumerator MoveOneTile(Transform playerTransform, float timeToMove)    // player movement implementation
     {
         Vector3 curentPos = playerTransform.position;
-        if (curentPos.x<_gameBoard.wayPoints[PositionIndex].position.x)
+        if (curentPos.x<GameManager.Instance.gameBoard.wayPoints[PositionIndex].position.x)
         {
             playerMovingDirection = PlayerMovingDirection.Right;
         }
-        if (curentPos.x>_gameBoard.wayPoints[PositionIndex].position.x)
+        if (curentPos.x>GameManager.Instance.gameBoard.wayPoints[PositionIndex].position.x)
         {
             playerMovingDirection = PlayerMovingDirection.Left;
         }
-        if (curentPos.y<_gameBoard.wayPoints[PositionIndex].position.y)
+        if (curentPos.y<GameManager.Instance.gameBoard.wayPoints[PositionIndex].position.y)
         {
             playerMovingDirection = PlayerMovingDirection.Up;
         }
-        if (curentPos.y>_gameBoard.wayPoints[PositionIndex].position.y)    // If case won't be used since players can't move down on their own
+        if (curentPos.y>GameManager.Instance.gameBoard.wayPoints[PositionIndex].position.y)    // If case won't be used since players can't move down on their own
         {
             playerMovingDirection = PlayerMovingDirection.Down;
         }
@@ -155,7 +150,7 @@ public class Player : MonoBehaviour
         while (t < 1)
         {
             t+=Time.deltaTime/timeToMove;
-            transform.position = Vector3.Lerp(curentPos, _gameBoard.wayPoints[PositionIndex].position, t);
+            transform.position = Vector3.Lerp(curentPos, GameManager.Instance.gameBoard.wayPoints[PositionIndex].position, t);
             yield return null;
         }    
         
@@ -173,7 +168,7 @@ public class Player : MonoBehaviour
         while (t < 1)
         {
             t+=Time.deltaTime/timeToMove;
-            transform.position = Vector3.Lerp(curentPos, _gameBoard.wayPoints[destinationIndex].position, t);
+            transform.position = Vector3.Lerp(curentPos, GameManager.Instance.gameBoard.wayPoints[destinationIndex].position, t);
             yield return null;
         }    
         playerState = PlayerState.Idle;
@@ -193,7 +188,7 @@ public class Player : MonoBehaviour
         while (t < 1)
         {
             t+=Time.deltaTime/timeToMove;
-            transform.position = Vector3.Lerp(curentPos, _gameBoard.wayPoints[destinationIndex].position, t);
+            transform.position = Vector3.Lerp(curentPos, GameManager.Instance.gameBoard.wayPoints[destinationIndex].position, t);
             yield return null;
         }    
         

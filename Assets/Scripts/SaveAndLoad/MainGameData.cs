@@ -6,16 +6,14 @@ using UnityEngine;
 [Serializable]
 public class MainGameData
 {
-    public int player1PositionIndex;
-    public int player2PositionIndex;
-    public bool isPlayerOneTurn;
+    public int[] playersPositionsIndexes;
+    public int playerTurnIndex;
     public int playerNum;
 
-    public MainGameData(int player1PositionIndex, int player2PositionIndex, bool isPlayerOneTurn, int playerNum)
+    public MainGameData(int[] playersPositionsIndexes, int playerTurnIndex, int playerNum)
     {
-        this.player1PositionIndex = player1PositionIndex;
-        this.player2PositionIndex = player2PositionIndex;
-        this.isPlayerOneTurn = isPlayerOneTurn;
+        this.playersPositionsIndexes = playersPositionsIndexes;
+        this.playerTurnIndex = playerTurnIndex;
         this.playerNum = playerNum;
     }
 }

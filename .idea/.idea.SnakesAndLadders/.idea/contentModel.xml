@@ -11,6 +11,7 @@
         </e>
         <e p="GetTiles.cs" t="Include" />
         <e p="PlayerSpawner.cs" t="Include" />
+        <e p="ResourceManager.cs" t="Include" />
         <e p="RollDice.cs" t="Include" />
         <e p="SceneLoader.cs" t="Include" />
         <e p="Scripts" t="Include">

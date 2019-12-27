@@ -22,6 +22,10 @@ public class MultipleTargetCamera : MonoBehaviour
     private void Start()
     {
         cam = GetComponent<Camera>();
+        foreach (var player in GameManager.Instance.players)
+        {
+            targets.Add(player.gameObject.transform);
+        }
     }
 
     void LateUpdate()
