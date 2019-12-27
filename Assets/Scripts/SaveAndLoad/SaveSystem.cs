@@ -9,6 +9,7 @@ public static class SaveSystem
     
     public static void InitiateMainGameData(int playerNum)
     {
+        DeleteSaveFile();
         int[] playersPositionsIndexes = new int[4];
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "/playerData.fun";

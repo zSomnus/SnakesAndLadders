@@ -764,8 +764,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 689071478}
-        m_MethodName: InitiateMainGame
+      - m_Target: {fileID: 762882457}
+        m_MethodName: OnPlayButtonPressed
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1061,8 +1061,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 689071478}
-        m_MethodName: InitiateMainGame
+      - m_Target: {fileID: 762882457}
+        m_MethodName: OnPlayButtonPressed
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1071,17 +1071,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &537231968
 MonoBehaviour:
@@ -1801,7 +1790,6 @@ MonoBehaviour:
   slider: {fileID: 1496252396}
   progressText: {fileID: 1528149787}
   timeWaitBeforeLoading: 1
-  mainGameSceneIndex: 1
 --- !u!4 &689071479
 Transform:
   m_ObjectHideFlags: 0
@@ -1873,7 +1861,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1984,8 +1972,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 689071478}
-        m_MethodName: InitiateMainGame
+      - m_Target: {fileID: 762882457}
+        m_MethodName: OnPlayButtonPressed
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2650,7 +2638,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2780,8 +2768,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 689071478}
-        m_MethodName: InitiateMainGame
+      - m_Target: {fileID: 762882457}
+        m_MethodName: OnPlayButtonPressed
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2910,7 +2898,7 @@ Canvas:
   m_RenderMode: 0
   m_Camera: {fileID: 674812548}
   m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
