@@ -19,7 +19,14 @@ To add a game tile: (Creating a snake or ladder is similar)
 3. Click on the GameBoard object in the scene. At the right side, under the GameBoard script, you increase the array "GameTiles" size by 1, and put the scriptable object you just created to it
 
 To pass success or failure to the main scene
-1. If your mini game scene, before switching to the mainscene, simply call a static method: SaveSystem.SaveMiniGameData(bool isSucceed). I created a minigame scene called TestGameScene so everyone can take a look.
+In your mini game scene, before switching to the mainscene,
+1. Call SaveSystem.UpdateMiniGameData(bool isSuccessful)        This will update the data so the main game will know if the player wins or loses the mini game
+2. Call LevelLoader.Instance.LoadMainGame(); .                  This will load the main game probably
+
+I created a minigame scene called TestGameScene so you can take a look.
+
+## Testing
+Press 1 to 6 to roll whatever point you like. Press 1 to roll a 1. Press 2 to roll a 2...
 
 <i> For the graphics, you just need to add some sprites separately in the children of GameBoard. </i>
 

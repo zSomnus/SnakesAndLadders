@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// This class will remain in every scene to fade in and fade out
+/// This class will remain in every scene, responsible for fade in and fade out effect
 /// </summary>
 public class SceneLoader : MonoBehaviour
 {
-    public GameObject transitionCanvas;
     public GameObject transitionPanel;
-    private Animator transitionAnim;
+    private Animator _transitionAnim;
     
     public static SceneLoader Instance { get; private set; }
 
@@ -17,7 +16,7 @@ public class SceneLoader : MonoBehaviour
     void Start()
     {
         transitionPanel.SetActive(true);
-        transitionAnim = transitionPanel.GetComponent<Animator>();
+        _transitionAnim = transitionPanel.GetComponent<Animator>();
         if (Instance == null)
         {
             Instance = this;
@@ -34,14 +33,14 @@ public class SceneLoader : MonoBehaviour
     /// </summary>
     public void FadeOut()
     {
-        transitionAnim.SetTrigger("end");
+        _transitionAnim.SetTrigger("end");
         StartCoroutine(FadeIn());
     }
 
     IEnumerator FadeIn()
     {
         yield return new WaitForSeconds(1);
-        transitionAnim.SetTrigger("start");
+        _transitionAnim.SetTrigger("start");
     }
     
 }

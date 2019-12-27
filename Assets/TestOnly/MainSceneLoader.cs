@@ -11,17 +11,7 @@ public class MainSceneLoader : MonoBehaviour
     
     public void LoadMainScene(bool isSuccessful)
     {
-        MiniGameData miniGameData = SaveSystem.LoadMiniGameData();
-        if (isSuccessful)
-        {
-            miniGameData.state = 1;
-        }
-        else
-        {
-            miniGameData.state = 2;
-        }
-        SaveSystem.SaveMiniGameData(miniGameData.state, miniGameData.playerIndex, miniGameData.tileNum);
-        LevelLoader.Instance.LoadMainGameFromMiniGame();
+        SaveSystem.UpdateMiniGameData(isSuccessful);
     }
     
 

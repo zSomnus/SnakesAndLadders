@@ -30,13 +30,28 @@ public class Player : MonoBehaviour
         PositionIndex = 0;
     }
 
-    public void MoveRandomly()    // player move because of dice rolling
+    /// <summary>
+    /// Move the player randomly from 1 tile to 6 tiles
+    /// </summary>
+    public void MoveRandomNumOfTiles()    // player move because of dice rolling
     {
-        int targetPositionIndex = PositionIndex + Random.Range(1, 7);
+        MoveTiles(Random.Range(1, 7));
+    }
+    
+    
+    public void MoveTiles(int numOfTiles)    
+    {
+        if (playerState == PlayerState.Moving)
+        {
+            return;
+        }
+        int targetPositionIndex = PositionIndex + numOfTiles;
 
-        playerState = PlayerState.Moving;
-        StartCoroutine(MoveForward(targetPositionIndex));
-        
+        StopAllCoroutines();
+        StartCoroutine(MoveToTile(targetPositionIndex));
+
+
+
     }
 
     /// <summary>
@@ -44,39 +59,44 @@ public class Player : MonoBehaviour
     /// </summary>
     /// <param name="targetPositionIndex">the destination tile index</param>
     /// <returns></returns>
-    private IEnumerator MoveForward(int targetPositionIndex)
+    private IEnumerator MoveToTile(int targetPositionIndex)
     {
-        if (targetPositionIndex > _gameBoard.wayPoints.Length - 1)
+        playerState = PlayerState.Moving;
+
+        targetPositionIndex = Mathf.Clamp(targetPositionIndex, 0, _gameBoard.wayPoints.Length - 1);
+        bool movingForward = targetPositionIndex > PositionIndex ? true : false;
+        if (movingForward)
         {
-            targetPositionIndex = _gameBoard.wayPoints.Length - 1;
-        }
-        while (PositionIndex < targetPositionIndex)
-        {
-            PositionIndex++;
-            StartCoroutine(MoveOneTile(transform, timeToMoveOneTile));
+            while (PositionIndex < targetPositionIndex)
+            {
+                PositionIndex++;
+                StartCoroutine(MoveOneTile(transform, timeToMoveOneTile));
             
-            yield return new WaitForSeconds(timeToMoveOneTile);
+                yield return new WaitForSeconds(timeToMoveOneTile);
+            }
+        }
+        else
+        {
+            while (PositionIndex > targetPositionIndex)
+            {
+                PositionIndex--;
+                StartCoroutine(MoveOneTile(transform, timeToMoveOneTile));
+            
+                yield return new WaitForSeconds(timeToMoveOneTile);
+            }
         }
 
-        // if (_gameBoard.PlayerOnSnakeOrLadder(PositionIndex) >= 0)    // If player is on a snake or ladder tile
-        // {
-        //     if (_gameBoard.PlayerOnSnakeOrLadder(PositionIndex) < PositionIndex)    // player is falling
-        //     {
-        //         
-        //         StartCoroutine(Fall(transform, _gameBoard.PlayerOnSnakeOrLadder(PositionIndex), 2));
-        //         
-        //     }
-        //     else // player is climbing
-        //     {
-        //         StartCoroutine(Climb(transform, _gameBoard.PlayerOnSnakeOrLadder(PositionIndex), 2));
-        //     }
-        // }
-        // else if (_gameBoard.CheckIfPlayerOnGameTile(this) != null)
-        // {
-        //     GameManager.Instance.PlayMiniGame(_gameBoard.CheckIfPlayerOnGameTile(this), this);
-        // }
+        if (ProcessSpecialTiles())
+        {
+            onPlayerMovementFinished?.Invoke(this);
+        }
+    }
+
+    public bool ProcessSpecialTiles()
+    {
         Snake snakeTile = PlayerPositionChecker.isPlayerOnSnakeHeadTile(this);
         Ladder ladderTile = PlayerPositionChecker.isPlayerOnLadderBottomTile(this);
+        GameTile gameTile = PlayerPositionChecker.isPlayerOnGameTile(this);
         if (snakeTile)
         {
             StartCoroutine(Fall(transform, snakeTile.endIndex, 2));
@@ -85,17 +105,24 @@ public class Player : MonoBehaviour
         {
             StartCoroutine(Climb(transform, ladderTile.endIndex, 2));
         }
-        else if (PlayerPositionChecker.isPlayerOnGameTile(this) != null)
-        {
-            GameManager.Instance.PlayMiniGame(PlayerPositionChecker.isPlayerOnGameTile(this), this);
-        }
-        else
+        else // Player doesn't need to move anymore
         {
             playerState = PlayerState.Idle;
-            onPlayerMovementFinished?.Invoke(this);
+            if (gameTile)
+            {
+                SaveSystem.SaveMiniGameData((int) MiniGameState.Pending, playerIndex, gameTile.tileNum);
+
+                
+                SaveSystem.SaveMainGameData();
+
+                LevelLoader.Instance.LoadScene(gameTile.gameSceneIndex);
+            }
         }
 
+        return (!snakeTile && !ladderTile && !gameTile);
     }
+    
+    
     
     /// <summary>
     /// Move the player for one tile at a time
@@ -137,7 +164,7 @@ public class Player : MonoBehaviour
     private IEnumerator Fall(Transform playerTransform,int destinationIndex, float timeToMove)    // player movement implementation
     {
         // Update data
-        playerState = PlayerState.Falling;
+        // playerState = PlayerState.Falling;
         PositionIndex = destinationIndex;
 
         // Update graphics
@@ -157,7 +184,7 @@ public class Player : MonoBehaviour
     private IEnumerator Climb(Transform playerTransform,int destinationIndex, float timeToMove)    // player movement implementation
     {
         // Update data
-        playerState = PlayerState.Climbing;
+        // playerState = PlayerState.Climbing;
         PositionIndex = destinationIndex; 
         
         // Update graphics
@@ -178,17 +205,8 @@ public class Player : MonoBehaviour
     }
 
 
-    /// <summary>
-    /// Detect if player reaches end or not
-    /// </summary>
-    /// <returns></returns>
-    public bool ReachEnd()
-    {
-        return PositionIndex == _gameBoard.wayPoints.Length - 1;
-    }
-
 }
 
-public enum PlayerState{ Moving, Idle, Falling, Climbing }
+public enum PlayerState{ Moving, Idle }
 public enum PlayerMovingDirection { Left, Right, Up, Down}
 
