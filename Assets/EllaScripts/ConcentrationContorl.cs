@@ -7,11 +7,12 @@ public class ConcentrationContorl : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] private float waitTime = 3f;
-    [SerializeField] private Image[] blockList;
+    //[SerializeField] private Image[] blockList;
     private Color[] colorArray = { Color.cyan, Color.magenta, Color.yellow, Color.black };
     private int[] count = { 0, 0, 0, 0 };
     private int success;
     [SerializeField] List<Color> compareList = new List<Color>();
+    [SerializeField] private Block[] blockList;
     void Start()
     {
         RandomColor();
@@ -32,14 +33,12 @@ public class ConcentrationContorl : MonoBehaviour
                 {
                     // Success
                     Debug.Log("Success");
-                    SaveSystem.UpdateMiniGameData(true);
                 }
             }
             else
             {
                 // Fail
                 Debug.Log("Fail");
-                SaveSystem.UpdateMiniGameData(false);
             }
         }
 
@@ -50,7 +49,7 @@ public class ConcentrationContorl : MonoBehaviour
             {
                 foreach(var member in blockList)
                 {
-                    member.color = Color.white;
+                    member.GetImage().color = Color.white;
                 }
             }
         }
@@ -65,7 +64,8 @@ public class ConcentrationContorl : MonoBehaviour
                 if (count[index] < 2)
                 {
                     count[index] += 1;
-                    member.color = colorArray[index];
+                    member.GetImage().color = colorArray[index];
+                    member.SetColor(colorArray[index]);
                     break;
                 }
                 else
