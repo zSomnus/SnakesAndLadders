@@ -13,7 +13,6 @@ public class MainSceneLoader : MonoBehaviour
     {
         SaveSystem.UpdateMiniGameData(isSuccessful);
         LevelLoader.Instance.LoadMainGame();
-
     }
     
 
