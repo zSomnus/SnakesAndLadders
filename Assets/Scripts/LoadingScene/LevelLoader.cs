@@ -12,7 +12,7 @@ public class LevelLoader : MonoBehaviour
     public Slider slider;
     public TextMeshProUGUI progressText;
     public float timeWaitBeforeLoading = 1;
-    public Animator transitionAnim;
+    public int mainGameSceneIndex = 1;
 
     public static LevelLoader Instance;
     private void Start()
@@ -28,23 +28,30 @@ public class LevelLoader : MonoBehaviour
         }
     }
 
-    public void LoadGame(int playerNum)
+    public void InitiateMainGame(int playerNum)
     {
-        SaveSystem.SavePlayer(0,0,false,playerNum);
+        if (playerNum == 1)
+        {
+            SaveSystem.InitiateMainGameData(1);
 
-        StartCoroutine(LoadAsynchronously(1));
+        }
+        else if (playerNum == 2)
+        {
+            SaveSystem.InitiateMainGameData(2);
+
+        }
+        
+        LoadMainGame();
 
     }
     
-    public void LoadMainGameFromMiniGame()
+    public void LoadMainGame()
     {
-        StartCoroutine(LoadAsynchronously(1));
-
+        LoadScene(mainGameSceneIndex);
     }
 
-    public void LoadMiniGame(int sceneIndex)
+    public void LoadScene(int sceneIndex)
     {
-        GameManager.Instance.SaveGameProgress();
         StartCoroutine(LoadAsynchronously(sceneIndex));
     }
 

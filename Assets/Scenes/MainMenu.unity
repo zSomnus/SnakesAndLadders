@@ -922,7 +922,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 689071478}
-        m_MethodName: LoadGame
+        m_MethodName: InitiateMainGame
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1661,7 +1661,7 @@ MonoBehaviour:
   slider: {fileID: 1496252396}
   progressText: {fileID: 1528149787}
   timeWaitBeforeLoading: 1
-  transitionAnim: {fileID: 1614145506}
+  mainGameSceneIndex: 1
 --- !u!4 &689071479
 Transform:
   m_ObjectHideFlags: 0
@@ -1845,7 +1845,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 689071478}
-        m_MethodName: LoadGame
+        m_MethodName: InitiateMainGame
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2897,7 +2897,7 @@ GameObject:
   - component: {fileID: 2058240903}
   - component: {fileID: 2058240902}
   m_Layer: 0
-  m_Name: SceneFadeInFadeOutControllear
+  m_Name: SceneLoader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

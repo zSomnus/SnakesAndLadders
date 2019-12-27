@@ -30,34 +30,24 @@ public class Player : MonoBehaviour
         PositionIndex = 0;
     }
 
-    public void MoveRandomly()    // player move because of dice rolling
+    /// <summary>
+    /// Move the player randomly from 1 tile to 6 tiles
+    /// </summary>
+    public void MoveRandomNumOfTiles()    // player move because of dice rolling
     {
-        int targetPositionIndex = PositionIndex + Random.Range(1, 7);
-
-        playerState = PlayerState.Moving;
-        StartCoroutine(MoveForward(targetPositionIndex));
-        
+        MoveTiles(Random.Range(1, 7));
     }
     
-    public void MoveCertainTiles(int tile)    // player move because of dice rolling
+    
+    public void MoveTiles(int numOfTiles)    
     {
-        print("Move " + tile + " tiles");
-        int targetPositionIndex = PositionIndex + tile;
+        int targetPositionIndex = PositionIndex + numOfTiles;
 
-        playerState = PlayerState.Moving;
-        if (tile > 0)
-        {
-            StopAllCoroutines();
+        StopAllCoroutines();
+        StartCoroutine(MoveToTile(targetPositionIndex));
 
-            StartCoroutine(MoveForward(targetPositionIndex));
-        }
-        else
-        {
-            StopAllCoroutines();
 
-            StartCoroutine(MoveBackward(targetPositionIndex));
-        }
-        
+
     }
 
     /// <summary>
@@ -65,20 +55,41 @@ public class Player : MonoBehaviour
     /// </summary>
     /// <param name="targetPositionIndex">the destination tile index</param>
     /// <returns></returns>
-    private IEnumerator MoveForward(int targetPositionIndex)
+    private IEnumerator MoveToTile(int targetPositionIndex)
     {
-        if (targetPositionIndex > _gameBoard.wayPoints.Length - 1)
+        playerState = PlayerState.Moving;
+
+        targetPositionIndex = Mathf.Clamp(targetPositionIndex, 0, _gameBoard.wayPoints.Length - 1);
+        bool movingForward = targetPositionIndex > PositionIndex ? true : false;
+        if (movingForward)
         {
-            targetPositionIndex = _gameBoard.wayPoints.Length - 1;
-        }
-        while (PositionIndex < targetPositionIndex)
-        {
-            PositionIndex++;
-            StartCoroutine(MoveOneTile(transform, timeToMoveOneTile));
+            while (PositionIndex < targetPositionIndex)
+            {
+                PositionIndex++;
+                StartCoroutine(MoveOneTile(transform, timeToMoveOneTile));
             
-            yield return new WaitForSeconds(timeToMoveOneTile);
+                yield return new WaitForSeconds(timeToMoveOneTile);
+            }
+        }
+        else
+        {
+            while (PositionIndex > targetPositionIndex)
+            {
+                PositionIndex--;
+                StartCoroutine(MoveOneTile(transform, timeToMoveOneTile));
+            
+                yield return new WaitForSeconds(timeToMoveOneTile);
+            }
         }
 
+        if (ProcessSpecialTiles())
+        {
+            onPlayerMovementFinished?.Invoke(this);
+        }
+    }
+
+    public bool ProcessSpecialTiles()
+    {
         Snake snakeTile = PlayerPositionChecker.isPlayerOnSnakeHeadTile(this);
         Ladder ladderTile = PlayerPositionChecker.isPlayerOnLadderBottomTile(this);
         GameTile gameTile = PlayerPositionChecker.isPlayerOnGameTile(this);
@@ -96,60 +107,18 @@ public class Player : MonoBehaviour
             if (gameTile)
             {
                 SaveSystem.SaveMiniGameData((int) MiniGameState.Pending, playerIndex, gameTile.tileNum);
-                LevelLoader.Instance.LoadMiniGame(gameTile.gameSceneIndex);
+                GameManager.Instance.SaveGameProgress();
+                
+                SaveSystem.SaveMainGameData();
+
+                LevelLoader.Instance.LoadScene(gameTile.gameSceneIndex);
             }
         }
 
-        if (!snakeTile && !ladderTile && !gameTile)
-        {
-            onPlayerMovementFinished?.Invoke(this);
-        }
+        return (!snakeTile && !ladderTile && !gameTile);
     }
     
-    private IEnumerator MoveBackward(int targetPositionIndex)
-    {
-        if (targetPositionIndex < 0)
-        {
-            targetPositionIndex = 0;
-        }
-
-        print("Move backward to the tile index " + targetPositionIndex);
-
-        while (PositionIndex > targetPositionIndex)
-        {
-            PositionIndex--;
-            StartCoroutine(MoveOneTile(transform, timeToMoveOneTile));
-            
-            yield return new WaitForSeconds(timeToMoveOneTile);
-        }
-
-        Snake snakeTile = PlayerPositionChecker.isPlayerOnSnakeHeadTile(this);
-        Ladder ladderTile = PlayerPositionChecker.isPlayerOnLadderBottomTile(this);
-        GameTile gameTile = PlayerPositionChecker.isPlayerOnGameTile(this);
-        if (snakeTile)
-        {
-            StartCoroutine(Fall(transform, snakeTile.endIndex, 2));
-        }
-        else if (ladderTile)
-        {
-            StartCoroutine(Climb(transform, ladderTile.endIndex, 2));
-        }
-        else // Player doesn't need to move anymore
-        {
-            playerState = PlayerState.Idle;
-        }
-        
-        if (gameTile)
-        {
-            SaveSystem.SaveMiniGameData((int)MiniGameState.Pending, playerIndex, gameTile.tileNum);
-            LevelLoader.Instance.LoadMiniGame(gameTile.gameSceneIndex);
-        }
-        else
-        {
-            onPlayerMovementFinished?.Invoke(this);
-        }
-
-    }
+    
     
     /// <summary>
     /// Move the player for one tile at a time
@@ -243,6 +212,6 @@ public class Player : MonoBehaviour
 
 }
 
-public enum PlayerState{ Moving, Idle, Falling, Climbing }
+public enum PlayerState{ Moving, Idle }
 public enum PlayerMovingDirection { Left, Right, Up, Down}
 

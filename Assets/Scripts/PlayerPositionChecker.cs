@@ -4,9 +4,7 @@ using UnityEngine;
 
 public static class PlayerPositionChecker 
 {
-    private static Player _player1;
 
-    private static Player _player2;
 
     private static GameBoard _gameBoard;
 
@@ -15,8 +13,7 @@ public static class PlayerPositionChecker
 
     public static void Prepare()
     {
-        _player1 = GameManager.Instance.player1;
-        _player2 = GameManager.Instance.player2;
+
         _gameBoard = GameManager.Instance.gameBoard;
         hasPrepared = true;
     }
