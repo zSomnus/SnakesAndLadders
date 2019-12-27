@@ -9,12 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c658fe921214c674e9df2a8cbba78a41, type: 3}
-  m_Name: TestBGM
+  m_Script: {fileID: 11500000, guid: 82e062f94f72be14eb3d5a1c60f37cb4, type: 3}
+  m_Name: SimonSaysTile
   m_EditorClassIdentifier: 
-  audioName: Bgm
-  audioClip: {fileID: 8300000, guid: 256118c7a53dcd44c978b29ffd9c60ec, type: 3}
-  volume: 0.041
-  pitch: 1
-  loop: 1
-  source: {fileID: 0}
+  positionIndex: 4
+  gameSceneIndex: 3
+  tileNum: 4
