@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class PlayerPositionChecker 
+public static class PlayerChecker 
 {
 
 
@@ -100,6 +100,16 @@ public static class PlayerPositionChecker
 
         return null;
 
+    }
+    
+    public static bool PlayerIsAi(Player player)
+    {
+        if (player.playerIndex>(int)GameManager.Instance.gameMode+1)
+        {
+            return true;
+        }
+
+        return false;
     }
     
     

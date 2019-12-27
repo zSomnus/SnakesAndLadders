@@ -165,7 +165,7 @@ public class GameManager : MonoBehaviour
     /// <param name="previousPlayer"></param>
     private void ToggleGameState(Player previousPlayer)
     {
-        if (!PlayerPositionChecker.GetVictoryPlayer())
+        if (!PlayerChecker.GetVictoryPlayer())
         {
             switch (previousPlayer.playerIndex)
             {
@@ -186,21 +186,21 @@ public class GameManager : MonoBehaviour
         else     // There is a player winning
         {
             gameState = GameState.GameOver;
-            if (PlayerPositionChecker.IsPlayerWin(players[0]))
+            if (PlayerChecker.IsPlayerWin(players[0]))
             {
                 print("Player 1 won");
             }
-            if(PlayerPositionChecker.IsPlayerWin(players[1]))
+            if(PlayerChecker.IsPlayerWin(players[1]))
             {
                 print("Player 2 won");
             }
 
-            if (PlayerPositionChecker.IsPlayerWin(players[2]))
+            if (PlayerChecker.IsPlayerWin(players[2]))
             {
                 print("Player 3 won");
             }
 
-            if (PlayerPositionChecker.IsPlayerWin(players[3]))
+            if (PlayerChecker.IsPlayerWin(players[3]))
             {
                 print("Player 4 won");
             }
@@ -329,7 +329,10 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(2);
         RollDiceAndMovePlayer();
     }
+
+    
 }
+
 
 public enum GameState
 {

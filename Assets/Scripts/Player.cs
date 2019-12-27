@@ -31,7 +31,18 @@ public class Player : MonoBehaviour
     {
         MoveTiles(Random.Range(1, 7));
     }
-    
+
+    /// <summary>
+    /// test only
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator WaitBeforeMove(int tileNum, float timeToWait)
+    {
+        yield return new WaitForSeconds(timeToWait);
+        print("Tile number to move is "+tileNum);
+
+        MoveTiles(tileNum);
+    }
     
     public void MoveTiles(int numOfTiles)    
     {
@@ -80,7 +91,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (ProcessSpecialTiles())
+        if (!ProcessSpecialTiles())
         {
             onPlayerMovementFinished?.Invoke(this);
         }
@@ -88,9 +99,9 @@ public class Player : MonoBehaviour
 
     public bool ProcessSpecialTiles()
     {
-        Snake snakeTile = PlayerPositionChecker.isPlayerOnSnakeHeadTile(this);
-        Ladder ladderTile = PlayerPositionChecker.isPlayerOnLadderBottomTile(this);
-        GameTile gameTile = PlayerPositionChecker.isPlayerOnGameTile(this);
+        Snake snakeTile = PlayerChecker.isPlayerOnSnakeHeadTile(this);
+        Ladder ladderTile = PlayerChecker.isPlayerOnLadderBottomTile(this);
+        GameTile gameTile = PlayerChecker.isPlayerOnGameTile(this);
         if (snakeTile)
         {
             StartCoroutine(Fall(transform, snakeTile.endIndex, 2));
@@ -105,16 +116,34 @@ public class Player : MonoBehaviour
             if (gameTile)
             {
                 SaveSystem.SaveMiniGameData((int) MiniGameState.Pending, playerIndex, gameTile.tileNum);
+                if (PlayerChecker.PlayerIsAi(this))
+                {
+                    float chance = Random.Range(0f, 1.0f);
+                    if (chance > gameTile.successRate)
+                    {
+                        print($"Ai loses the mini game, moves backwards for "+gameTile.tileNum+" tiles");
+                        StartCoroutine(WaitBeforeMove(-gameTile.tileNum, 3));
+                    }
+                    else
+                    {
+                        print($"Ai wins the mini game, moves forwards for "+gameTile.tileNum+" tiles");
+                        StartCoroutine(WaitBeforeMove(gameTile.tileNum, 3));
+
+                    }
+                    
+                }
+                else
+                {
+                    SaveSystem.SaveMainGameData();
+                    LevelLoader.Instance.LoadScene(gameTile.gameSceneIndex);
+
+                }
 
 
-
-                SaveSystem.SaveMainGameData();
-
-                LevelLoader.Instance.LoadScene(gameTile.gameSceneIndex);
             }
         }
 
-        return (!snakeTile && !ladderTile && !gameTile);
+        return (snakeTile || ladderTile || gameTile);
     }
     
     

@@ -126,7 +126,6 @@ public static class SaveSystem
         SaveSystem.SaveMiniGameData(miniGameData.state, miniGameData.playerIndex, miniGameData.tileNum);
         
         //Always go back to the main scene after saving the mini game data
-        LevelLoader.Instance.LoadMainGame();
     }
 
 
