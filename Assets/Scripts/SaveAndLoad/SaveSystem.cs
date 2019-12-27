@@ -9,7 +9,15 @@ public static class SaveSystem
     
     public static void InitiateMainGameData(int playerNum)
     {
-        int[] playersPositionsIndexes = new int[playerNum];
+        int[] playersPositionsIndexes;
+        if (playerNum == 1)
+        {
+            playersPositionsIndexes = new int[2];
+        }
+        else
+        {
+            playersPositionsIndexes = new int[playerNum];
+        }
 
 
         BinaryFormatter formatter = new BinaryFormatter();

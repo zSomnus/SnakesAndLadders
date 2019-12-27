@@ -211,11 +211,16 @@ public class GameManager : MonoBehaviour
             return false;
         }
 
-
-        players = new Player[mainGameData.playerNum];
+        if (mainGameData.playerNum == 1)
+        {
+            players = new Player[2];
+        }
+        else
+        {
+            players = new Player[mainGameData.playerNum];
+        }
         for (int i = 0; i < players.Length; i++)
         {
-            
             GameObject player = Instantiate(ResourceManager.Instance.players[i], gameBoard.wayPoints[mainGameData.playersPositionsIndexes[i]].position, Quaternion.identity);
             players[i] = player.GetComponent<Player>();
             players[i].PositionIndex = mainGameData.playersPositionsIndexes[i];
