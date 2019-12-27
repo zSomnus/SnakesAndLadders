@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     private Camera camera;
     
     // Enum
+    public GameTurnState gameTurnState;
     public GameState gameState;
     public GameMode gameMode;
     
@@ -35,7 +36,7 @@ public class GameManager : MonoBehaviour
         }
         
         // Preparation
-        gameState = GameState.Preparing;
+        gameState = GameState.Prepare;
 
         
     }
@@ -47,8 +48,7 @@ public class GameManager : MonoBehaviour
         LoadGameProgress();
         InitializeCamera();
         OnGamePrepareFinished?.Invoke();
-        
-
+        gameState = GameState.InProgress;
 
     }
 
@@ -69,18 +69,25 @@ public class GameManager : MonoBehaviour
 
     public void RollDiceAndMovePlayer()
     {
-        switch (gameState)    // only accept player input if it is in player 1 turn or player 2 turn
+        switch (gameTurnState)    // only accept player input if it is in player 1 turn or player 2 turn
         {
-            case GameState.Player1Turn:
+            case GameTurnState.Player1Turn:
+                print("player 1 turn");
                 players[0].MoveRandomNumOfTiles();
                 break;
-            case GameState.Player2Turn:
+            case GameTurnState.Player2Turn:
+                print("player 2 turn");
+
                 players[1].MoveRandomNumOfTiles();
                 break;
-            case GameState.Player3Turn:
+            case GameTurnState.Player3Turn:
+                print("player 3 turn");
+
                 players[2].MoveRandomNumOfTiles();
                 break;
-            case GameState.Player4Turn:
+            case GameTurnState.Player4Turn:
+                print("player 4 turn");
+
                 players[3].MoveRandomNumOfTiles();
                 break;
         }
@@ -138,15 +145,15 @@ public class GameManager : MonoBehaviour
 
     private Player GetPlayerInTurn()
     {
-        switch (gameState)    // only accept player input if it is in player 1 turn or player 2 turn
+        switch (gameTurnState)    // only accept player input if it is in player 1 turn or player 2 turn
         {
-            case GameState.Player1Turn:
+            case GameTurnState.Player1Turn:
                 return players[0];
-            case GameState.Player2Turn:
+            case GameTurnState.Player2Turn:
                 return players[1];
-            case GameState.Player3Turn:
+            case GameTurnState.Player3Turn:
                 return players[2];
-            case GameState.Player4Turn:
+            case GameTurnState.Player4Turn:
                 return players[3];
         }
         return null;
@@ -163,35 +170,20 @@ public class GameManager : MonoBehaviour
             switch (previousPlayer.playerIndex)
             {
                 case 1:
-                        gameState = GameState.Player2Turn; 
+                    gameTurnState = GameTurnState.Player2Turn; 
                     break;
                 case 2:
-                    if (gameMode == GameMode.ThreePlayers ||
-                        gameMode == GameMode.FourPlayers)
-                    {
-                        gameState = GameState.Player3Turn;
-                    }
-                    else
-                    {
-                        gameState = GameState.Player1Turn;
-                    }
+                    gameTurnState = GameTurnState.Player3Turn;
                     break;
                 case 3:
-                    if (gameMode == GameMode.FourPlayers)
-                    {
-                        gameState = GameState.Player4Turn;
-                    }
-                    else
-                    {
-                        gameState = GameState.Player1Turn;
-                    }
+                    gameTurnState = GameTurnState.Player4Turn;
                     break;
                 case 4:
-                    gameState = GameState.Player1Turn;
+                    gameTurnState = GameTurnState.Player1Turn;
                     break;
             }
         }
-        else
+        else     // There is a player winning
         {
             gameState = GameState.GameOver;
             if (PlayerPositionChecker.IsPlayerWin(players[0]))
@@ -232,15 +224,7 @@ public class GameManager : MonoBehaviour
         }
         
         gameMode = (GameMode) (mainGameData.playerNum-1);
-
-        if (gameMode == GameMode.OnePlayer)
-        {
-            players = new Player[2];
-        }
-        else
-        {
-            players = new Player[mainGameData.playerNum];
-        }
+        players = new Player[4];
         for (int i = 0; i < players.Length; i++)
         {
             GameObject player = Instantiate(ResourceManager.Instance.players[i], gameBoard.wayPoints[mainGameData.playersPositionsIndexes[i]].position, Quaternion.identity);
@@ -255,16 +239,16 @@ public class GameManager : MonoBehaviour
         switch (mainGameData.playerTurnIndex)
         {
             case 0:
-                gameState = GameState.Player1Turn;
+                gameTurnState = GameTurnState.Player1Turn;
                 break;
             case 1:
-                gameState = GameState.Player2Turn;
+                gameTurnState = GameTurnState.Player2Turn;
                 break;
             case 2:
-                gameState = GameState.Player3Turn;
+                gameTurnState = GameTurnState.Player3Turn;
                 break;
             case 3:
-                gameState = GameState.Player4Turn;
+                gameTurnState = GameTurnState.Player4Turn;
                 break;
         }
 
@@ -289,16 +273,16 @@ public class GameManager : MonoBehaviour
             switch (miniGameData.playerIndex)
             {
                 case 1:
-                    gameState = GameState.Player1Turn;
+                    gameTurnState = GameTurnState.Player1Turn;
                     break;
                 case 2:
-                    gameState = GameState.Player2Turn;
+                    gameTurnState = GameTurnState.Player2Turn;
                     break;
                 case 3:
-                    gameState = GameState.Player3Turn;
+                    gameTurnState = GameTurnState.Player3Turn;
                     break;
                 case 4:
-                    gameState = GameState.Player4Turn;
+                    gameTurnState = GameTurnState.Player4Turn;
                     break;
             }
             
@@ -327,13 +311,17 @@ public class GameManager : MonoBehaviour
     {
         SaveSystem.DeleteSaveFile();
     }
-
-    private void AiBeginMoving(Player player)
+    
+    private void AiBeginMoving(Player playerJustStopMoving)
     {
-        if (player.playerIndex == 1 && gameMode == GameMode.OnePlayer)    // If the player who just stop the movement is player1
+        if ((int) gameMode != 3 && (playerJustStopMoving.playerIndex <= 3 && playerJustStopMoving.playerIndex >= (int) gameMode + 1))
         {
+            print(playerJustStopMoving.playerIndex);
+            print((int) gameMode);
+            print("Ai move");
             StartCoroutine(AiMove());
         }
+
     }
 
     private IEnumerator AiMove()
@@ -343,6 +331,13 @@ public class GameManager : MonoBehaviour
     }
 }
 
-public enum GameState{Preparing, Player1Turn, Player2Turn, Player3Turn, Player4Turn, GameOver}
+public enum GameState
+{
+    Prepare,
+    InProgress,
+    GameOver
+}
+
+public enum GameTurnState{Player1Turn, Player2Turn, Player3Turn, Player4Turn}
 public enum GameMode{OnePlayer, TwoPlayers, ThreePlayers, FourPlayers}
 

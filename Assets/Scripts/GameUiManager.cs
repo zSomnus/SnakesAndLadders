@@ -23,7 +23,7 @@ public class GameUiManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.Instance.gameState == GameState.Player1Turn && GameManager.Instance.players[0].playerState == PlayerState.Idle)
+        if (GameManager.Instance.gameTurnState == GameTurnState.Player1Turn && GameManager.Instance.players[0].playerState == PlayerState.Idle)
         {
             playersRollButtons[0].SetActive(true);
         }
@@ -35,7 +35,7 @@ public class GameUiManager : MonoBehaviour
         // Only update the player 2 button if it is in two player mode
         if (GameManager.Instance.gameMode == GameMode.TwoPlayers || GameManager.Instance.gameMode == GameMode.ThreePlayers || GameManager.Instance.gameMode == GameMode.FourPlayers)
         {
-            if (GameManager.Instance.gameState == GameState.Player2Turn && GameManager.Instance.players[1].playerState == PlayerState.Idle)
+            if (GameManager.Instance.gameTurnState == GameTurnState.Player2Turn && GameManager.Instance.players[1].playerState == PlayerState.Idle)
             { 
                 playersRollButtons[1].SetActive(true);
             }
@@ -48,7 +48,7 @@ public class GameUiManager : MonoBehaviour
         
         if (GameManager.Instance.gameMode == GameMode.ThreePlayers || GameManager.Instance.gameMode == GameMode.FourPlayers)
         {
-            if (GameManager.Instance.gameState == GameState.Player3Turn && GameManager.Instance.players[2].playerState == PlayerState.Idle)
+            if (GameManager.Instance.gameTurnState == GameTurnState.Player3Turn && GameManager.Instance.players[2].playerState == PlayerState.Idle)
             { 
                 playersRollButtons[2].SetActive(true);
             }
@@ -61,7 +61,7 @@ public class GameUiManager : MonoBehaviour
         
         if (GameManager.Instance.gameMode == GameMode.FourPlayers)
         {
-            if (GameManager.Instance.gameState == GameState.Player4Turn && GameManager.Instance.players[3].playerState == PlayerState.Idle)
+            if (GameManager.Instance.gameTurnState == GameTurnState.Player4Turn && GameManager.Instance.players[3].playerState == PlayerState.Idle)
             { 
                 playersRollButtons[3].SetActive(true);
             }
