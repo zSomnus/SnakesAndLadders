@@ -130,6 +130,9 @@ public static class SaveSystem
             miniGameData.state = 2;
         }
         SaveSystem.SaveMiniGameData(miniGameData.state, miniGameData.playerIndex, miniGameData.tileNum);
+        
+        LevelLoader.Instance.LoadMainGame();
+
     }
 
     
