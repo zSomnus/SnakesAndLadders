@@ -33,12 +33,16 @@ public class ConcentrationContorl : MonoBehaviour
                 {
                     // Success
                     Debug.Log("Success");
+                    SaveSystem.UpdateMiniGameData(true);
+                    LevelLoader.Instance.LoadMainGame();
                 }
             }
             else
             {
                 // Fail
                 Debug.Log("Fail");
+                SaveSystem.UpdateMiniGameData(false);
+                LevelLoader.Instance.LoadMainGame();
             }
         }
 
