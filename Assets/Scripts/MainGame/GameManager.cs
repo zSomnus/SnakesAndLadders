@@ -47,6 +47,8 @@ public class GameManager : MonoBehaviour
         camera = Camera.main;
         LoadGameProgress();
         InitializeCamera();
+        
+        
         OnGamePrepareFinished?.Invoke();
         gameState = GameState.InProgress;
 
@@ -95,6 +97,7 @@ public class GameManager : MonoBehaviour
 
     private void GodMode()
     {
+  
         if (Input.GetKey(KeyCode.Alpha1))
         {
             GetPlayerInTurn().MoveTiles(1);
@@ -316,9 +319,6 @@ public class GameManager : MonoBehaviour
     {
         if ((int) gameMode != 3 && (playerJustStopMoving.playerIndex <= 3 && playerJustStopMoving.playerIndex >= (int) gameMode + 1))
         {
-            print(playerJustStopMoving.playerIndex);
-            print((int) gameMode);
-            print("Ai move");
             StartCoroutine(AiMove());
         }
 

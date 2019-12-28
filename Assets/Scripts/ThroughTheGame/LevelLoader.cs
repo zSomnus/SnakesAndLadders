@@ -12,7 +12,7 @@ public class LevelLoader : MonoBehaviour
     public Slider slider;
     public TextMeshProUGUI progressText;
     public float timeWaitBeforeLoading = 1;
-    public int mainGameSceneIndex = 1;
+    private int mainGameSceneIndex = 1;
 
     public static LevelLoader Instance;
     private void Start()
@@ -38,6 +38,7 @@ public class LevelLoader : MonoBehaviour
     
     public void LoadMainGame()
     {
+        print("Load main game");
         LoadScene(mainGameSceneIndex);
     }
 

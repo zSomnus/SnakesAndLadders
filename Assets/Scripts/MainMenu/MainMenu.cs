@@ -13,4 +13,10 @@ public class MainMenu : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void OnPlayButtonPressed(int playerNum)
+    {
+        LevelLoader.Instance.InitiateMainGame(playerNum);
+    }
+    
 }

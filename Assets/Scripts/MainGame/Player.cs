@@ -110,30 +110,31 @@ public class Player : MonoBehaviour
         {
             StartCoroutine(Climb(transform, ladderTile.endIndex, 2));
         }
-        else // Player doesn't need to move anymore
+        else 
         {
-            playerState = PlayerState.Idle;
+            playerState = PlayerState.Idle; // Player doesn't need to move temporarily 
             if (gameTile)
             {
-                SaveSystem.SaveMiniGameData((int) MiniGameState.Pending, playerIndex, gameTile.tileNum);
-                if (PlayerChecker.PlayerIsAi(this))
+                
+                if (PlayerChecker.PlayerIsAi(this))    
                 {
                     float chance = Random.Range(0f, 1.0f);
                     if (chance > gameTile.successRate)
                     {
                         print($"Ai loses the mini game, moves backwards for "+gameTile.tileNum+" tiles");
-                        StartCoroutine(WaitBeforeMove(-gameTile.tileNum, 3));
+                        StartCoroutine(WaitBeforeMove(-gameTile.tileNum, 2));
                     }
                     else
                     {
                         print($"Ai wins the mini game, moves forwards for "+gameTile.tileNum+" tiles");
-                        StartCoroutine(WaitBeforeMove(gameTile.tileNum, 3));
+                        StartCoroutine(WaitBeforeMove(gameTile.tileNum, 2));
 
                     }
                     
                 }
                 else
                 {
+                    SaveSystem.SaveMiniGameData((int) MiniGameState.Pending, playerIndex, gameTile.tileNum);
                     SaveSystem.SaveMainGameData();
                     LevelLoader.Instance.LoadScene(gameTile.gameSceneIndex);
 
