@@ -4,14 +4,23 @@
     <e p="C:\Users\galax\.Rider2019.3\system\extResources" t="IncludeRecursive" />
     <e p="C:\Users\galax\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_SnakesAndLadders.-1460898234.00" t="ExcludeRecursive" />
     <e p="G:\Unity\SnakesAndLadders" t="IncludeRecursive">
+      <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
+        <e p="EffectExamples" t="Include">
+          <e p="Misc Effects" t="Include">
+            <e p="Scripts" t="Include">
+              <e p="SpawnEffect.cs" t="Include" />
+            </e>
+          </e>
+        </e>
         <e p="EllaScripts" t="Include">
           <e p="Block.cs" t="Include" />
           <e p="ConcentrationContorl.cs" t="Include" />
           <e p="Dot.cs" t="Include" />
           <e p="RollDice.cs" t="Include" />
         </e>
+        <e p="RocketDodgingUiController.cs" t="Include" />
         <e p="Scripts" t="Include">
           <e p="GetTiles.cs" t="Include" />
           <e p="MainGame" t="Include">
@@ -31,6 +40,13 @@
           <e p="MainMenu" t="Include">
             <e p="MainMenu.cs" t="Include" />
           </e>
+          <e p="MiniGame" t="Include">
+            <e p="HomingMissile.cs" t="Include" />
+            <e p="MiniGameManager.cs" t="Include" />
+            <e p="MiniGamePlayer.cs" t="Include" />
+            <e p="RocketSpawner.cs" t="Include" />
+            <e p="RocketSpawnerHolder.cs" t="Include" />
+          </e>
           <e p="PlayerSpawner.cs" t="Include" />
           <e p="SaveAndLoad" t="Include">
             <e p="MainGameData.cs" t="Include" />
@@ -47,6 +63,22 @@
             <e p="SceneLoader.cs" t="Include" />
             <e p="Sound.cs" t="Include" />
             <e p="TransitionPanel.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Shared" t="Include">
+          <e p="Ramps" t="Include">
+            <e p="Editor" t="Include">
+              <e p="RampAssetEditor.cs" t="Include" />
+            </e>
+            <e p="Runtime" t="Include">
+              <e p="RampAsset.cs" t="Include" />
+            </e>
+          </e>
+          <e p="Scripts" t="Include">
+            <e p="AdjustTimeScale.cs" t="Include" />
+            <e p="ProximityActivate.cs" t="Include" />
+            <e p="SimpleCameraController.cs" t="Include" />
+            <e p="SimpleCharacterMotor.cs" t="Include" />
           </e>
         </e>
         <e p="TestOnly" t="Include">
@@ -78,6 +110,14 @@
           </e>
           <e p="Sprites" t="Include">
             <e p="EmojiOne Attribution.txt" t="Include" />
+          </e>
+        </e>
+        <e p="TutorialInfo" t="Include">
+          <e p="Scripts" t="Include">
+            <e p="Editor" t="Include">
+              <e p="ReadmeEditor.cs" t="Include" />
+            </e>
+            <e p="Readme.cs" t="Include" />
           </e>
         </e>
       </e>

@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Concentration.unity
     guid: aa5c7288eca4b8f4ab03eb3b02620b03
+  - enabled: 1
+    path: Assets/Scenes/MiniGameDodging.unity
+    guid: 9b710bdf86e3c0b41954e19132989ec9
   m_configObjects: {}
