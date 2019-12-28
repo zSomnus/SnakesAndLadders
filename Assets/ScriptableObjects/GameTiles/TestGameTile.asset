@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 82e062f94f72be14eb3d5a1c60f37cb4, type: 3}
-  m_Name: GameTile1
+  m_Name: TestGameTile
   m_EditorClassIdentifier: 
   positionIndex: 1
   gameSceneIndex: 2

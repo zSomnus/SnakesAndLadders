@@ -13,6 +13,7 @@ public class ConcentrationContorl : MonoBehaviour
     private int success;
     [SerializeField] List<Color> compareList = new List<Color>();
     [SerializeField] private Block[] blockList;
+
     void Start()
     {
         RandomColor();
@@ -35,6 +36,7 @@ public class ConcentrationContorl : MonoBehaviour
                     Debug.Log("Success");
                     SaveSystem.UpdateMiniGameData(true);
                     LevelLoader.Instance.LoadMainGame();
+                    compareList.Clear();
                 }
             }
             else
@@ -43,6 +45,7 @@ public class ConcentrationContorl : MonoBehaviour
                 Debug.Log("Fail");
                 SaveSystem.UpdateMiniGameData(false);
                 LevelLoader.Instance.LoadMainGame();
+                compareList.Clear();
             }
         }
 
