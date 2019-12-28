@@ -20,6 +20,8 @@
           <e p="Dot.cs" t="Include" />
           <e p="RollDice.cs" t="Include" />
         </e>
+        <e p="MemoryTile.cs" t="Include" />
+        <e p="MiniGameMemoryTileUiController.cs" t="Include" />
         <e p="RocketDodgingUiController.cs" t="Include" />
         <e p="Scripts" t="Include">
           <e p="GetTiles.cs" t="Include" />
