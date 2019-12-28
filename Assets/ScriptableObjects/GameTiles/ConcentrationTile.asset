@@ -15,4 +15,4 @@ MonoBehaviour:
   positionIndex: 6
   gameSceneIndex: 4
   tileNum: 2
-  successRate: 0
+  successRate: 0.5
