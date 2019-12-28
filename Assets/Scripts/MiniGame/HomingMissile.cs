@@ -17,6 +17,7 @@ public class HomingMissile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        MiniGameManager.Instance.homingMissiles.Add(gameObject);
         rb = GetComponent<Rigidbody2D>();
 
         var player = GameObject.FindGameObjectWithTag("Player");

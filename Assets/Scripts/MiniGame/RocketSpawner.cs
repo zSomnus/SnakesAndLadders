@@ -20,7 +20,6 @@ public class RocketSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print("dwada");
         nextSpawnTimeLeft -= Time.deltaTime;
         if (nextSpawnTimeLeft <= 0f)
         {
