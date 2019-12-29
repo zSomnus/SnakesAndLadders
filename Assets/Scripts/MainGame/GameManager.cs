@@ -66,7 +66,6 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         GodMode();
-
     }
 
     public void RollDiceAndMovePlayer()
@@ -97,7 +96,7 @@ public class GameManager : MonoBehaviour
 
     private void GodMode()
     {
-  
+
         if (Input.GetKey(KeyCode.Alpha1))
         {
             GetPlayerInTurn().MoveTiles(1);

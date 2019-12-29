@@ -23,7 +23,6 @@ public class RocketSpawner : MonoBehaviour
         nextSpawnTimeLeft -= Time.deltaTime;
         if (nextSpawnTimeLeft <= 0f)
         {
-            print("Spawn missile");
             if (GameObject.FindGameObjectWithTag("Player") != null)
             {
                 Spawn();

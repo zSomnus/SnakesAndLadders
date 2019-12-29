@@ -38,7 +38,6 @@ public class LevelLoader : MonoBehaviour
     
     public void LoadMainGame()
     {
-        print("Load main game");
         LoadScene(mainGameSceneIndex);
     }
 
