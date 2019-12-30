@@ -42,3 +42,18 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: ColorTile
+    uniqueID: 396273853
+    locked: 0
+  - name: MinigameIcon
+    uniqueID: 3495461505
+    locked: 0
+  - name: Ladder
+    uniqueID: 392220207
+    locked: 0
+  - name: Snake
+    uniqueID: 1387713687
+    locked: 0
+  - name: Player
+    uniqueID: 663591901
+    locked: 0
