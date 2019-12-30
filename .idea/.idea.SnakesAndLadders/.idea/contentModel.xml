@@ -22,6 +22,14 @@
         </e>
         <e p="Scripts" t="Include">
           <e p="GetTiles.cs" t="Include" />
+          <e p="Line.cs" t="Include" />
+          <e p="LineCreator.cs" t="Include" />
+          <e p="LineRiderDeadSpace.cs" t="Include" />
+          <e p="LineRiderDestination.cs" t="Include" />
+          <e p="LineRiderGameManager.cs" t="Include" />
+          <e p="LineRiderPlayer.cs" t="Include" />
+          <e p="LineRiderPlayerSpawner.cs" t="Include" />
+          <e p="LineRiderUiController.cs" t="Include" />
           <e p="MainGame" t="Include">
             <e p="GameBoard.cs" t="Include" />
             <e p="GameManager.cs" t="Include" />
