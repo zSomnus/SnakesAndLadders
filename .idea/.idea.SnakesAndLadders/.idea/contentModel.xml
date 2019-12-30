@@ -20,9 +20,16 @@
           <e p="Dot.cs" t="Include" />
           <e p="RollDice.cs" t="Include" />
         </e>
-        <e p="RocketDodgingUiController.cs" t="Include" />
         <e p="Scripts" t="Include">
           <e p="GetTiles.cs" t="Include" />
+          <e p="Line.cs" t="Include" />
+          <e p="LineCreator.cs" t="Include" />
+          <e p="LineRiderDeadSpace.cs" t="Include" />
+          <e p="LineRiderDestination.cs" t="Include" />
+          <e p="LineRiderGameManager.cs" t="Include" />
+          <e p="LineRiderPlayer.cs" t="Include" />
+          <e p="LineRiderPlayerSpawner.cs" t="Include" />
+          <e p="LineRiderUiController.cs" t="Include" />
           <e p="MainGame" t="Include">
             <e p="GameBoard.cs" t="Include" />
             <e p="GameManager.cs" t="Include" />
@@ -41,11 +48,28 @@
             <e p="MainMenu.cs" t="Include" />
           </e>
           <e p="MiniGame" t="Include">
-            <e p="HomingMissile.cs" t="Include" />
-            <e p="MiniGameManager.cs" t="Include" />
-            <e p="MiniGamePlayer.cs" t="Include" />
-            <e p="RocketSpawner.cs" t="Include" />
-            <e p="RocketSpawnerHolder.cs" t="Include" />
+            <e p="DunkBasketball" t="Include">
+              <e p="Ball.cs" t="Include" />
+              <e p="BallSpawner.cs" t="Include" />
+              <e p="Basketry.cs" t="Include" />
+              <e p="BasketryChecker.cs" t="Include" />
+              <e p="DeadSpace.cs" t="Include" />
+              <e p="FunkBasketballUiController.cs" t="Include" />
+              <e p="PhysicsSportManager.cs" t="Include" />
+              <e p="PlatformController.cs" t="Include" />
+            </e>
+            <e p="MemoryTile" t="Include">
+              <e p="MemoryTile.cs" t="Include" />
+              <e p="MiniGameMemoryTileUiController.cs" t="Include" />
+            </e>
+            <e p="RocketDodge" t="Include">
+              <e p="HomingMissile.cs" t="Include" />
+              <e p="MiniGameManager.cs" t="Include" />
+              <e p="MiniGamePlayer.cs" t="Include" />
+              <e p="RocketDodgingUiController.cs" t="Include" />
+              <e p="RocketSpawner.cs" t="Include" />
+              <e p="RocketSpawnerHolder.cs" t="Include" />
+            </e>
           </e>
           <e p="PlayerSpawner.cs" t="Include" />
           <e p="SaveAndLoad" t="Include">

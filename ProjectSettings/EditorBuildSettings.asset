@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 3623ff7b2be21284cb5af0fe09a96e91
   - enabled: 1
-    path: Assets/Scenes/MainLevel.unity
+    path: Assets/Scenes/Main Game/MainLevel.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
     path: Assets/Scenes/TestGameScene.unity
@@ -21,6 +21,15 @@ EditorBuildSettings:
     path: Assets/Scenes/Concentration.unity
     guid: aa5c7288eca4b8f4ab03eb3b02620b03
   - enabled: 1
-    path: Assets/Scenes/MiniGameDodging.unity
+    path: Assets/Scenes/Mini Game/DodgingRocket.unity
     guid: 9b710bdf86e3c0b41954e19132989ec9
+  - enabled: 1
+    path: Assets/Scenes/Mini Game/MemoryTile.unity
+    guid: e0ff7ddc81a82e54a85732454cf256bb
+  - enabled: 1
+    path: Assets/Scenes/Mini Game/DunkBasketball.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Mini Game/LineRider.unity
+    guid: 84efb496c5e39a740b81ec93570d1d61
   m_configObjects: {}
