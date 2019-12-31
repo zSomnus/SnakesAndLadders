@@ -18,6 +18,8 @@ public class Balloon : MonoBehaviour
     [SerializeField] private Text timerTxt;
     private bool isSuccess;
     private bool isUnseccess;
+    [SerializeField] private Image image;
+    private bool stop;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,18 +32,26 @@ public class Balloon : MonoBehaviour
         exploveScale = 5f;
         timer = 10f;
         timerTxt = GameObject.Find("BalloonTimer").GetComponent<Text>();
+        image = GameObject.Find("BalloonImage").GetComponent<Image>();
+        stop = false;
     }
 
     private void Update()
     {
+        image.color = new Color(1f, 1f - (transform.localScale.x / exploveScale), 0, 1f);
+
         timer -= Time.deltaTime;
         timerTxt.text = Mathf.Round(timer).ToString();
         if(timer <= 0 && (transform.localScale.x < 5f))
         {
-            Debug.Log("Fail");
-            isUnseccess = true;
-            timer = 10f;
-            timerTxt.text = "?";
+            if (!stop)
+            {
+                Debug.Log("Fail");
+                isUnseccess = true;
+                //timer = 10f;
+                //timerTxt.text = "?";
+                stop = true;
+            }
         }
     }
     private void FixedUpdate()
@@ -65,9 +75,13 @@ public class Balloon : MonoBehaviour
 
         if(transform.localScale.x > 5f && transform.localScale.y > exploveScale)
         {
-            Debug.Log("Success!!!");
-            isSuccess = true;
-            transform.localScale = new Vector3(1f, 1f, 1f);
+            if (!stop)
+            {
+                Debug.Log("Success!!!");
+                isSuccess = true;
+                //transform.localScale = new Vector3(1f, 1f, 1f);
+                stop = true;
+            }
         }
     }
 
@@ -98,9 +112,19 @@ public class Balloon : MonoBehaviour
         return isSuccess;
     }
 
+    public void SetIsSuccess(bool b)
+    {
+        isSuccess = b;
+    }
+
     public bool IsUnsuccess()
     {
         return isUnseccess;
+    }
+
+    public void SetIsUnsuccess(bool b)
+    {
+        isUnseccess = false;
     }
 
 }

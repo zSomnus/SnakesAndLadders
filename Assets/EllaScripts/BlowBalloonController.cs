@@ -12,6 +12,7 @@ public class BlowBalloonController : MonoBehaviour
     [SerializeField] private Text countdownTxt;
     [SerializeField] private Balloon balloonState;
     private bool start;
+    private bool stop;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -50,12 +51,20 @@ public class BlowBalloonController : MonoBehaviour
             if (balloonState.IsUnsuccess())
             {
                 balloon.SetActive(false);
-                Debug.LogError("Fail");
+                //Debug.LogError("Fail");
+                SaveSystem.UpdateMiniGameData(false);
+                LevelLoader.Instance.LoadMainGame();
+                balloonState.SetIsUnsuccess(false);
+                start = false;
             }
             if (balloonState.IsSuccess())
             {
                 balloon.SetActive(false);
-                Debug.LogError("Success!");
+                //Debug.LogError("Success!");
+                SaveSystem.UpdateMiniGameData(true);
+                LevelLoader.Instance.LoadMainGame();
+                balloonState.SetIsSuccess(false);
+                start = false;
             }
         }
 

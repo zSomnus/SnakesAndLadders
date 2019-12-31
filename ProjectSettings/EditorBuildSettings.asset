@@ -32,4 +32,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Mini Game/LineRider.unity
     guid: 84efb496c5e39a740b81ec93570d1d61
+  - enabled: 1
+    path: Assets/Scenes/BlowBalloon.unity
+    guid: 172e7cb73245eb24fb5da548c48bc64c
   m_configObjects: {}
