@@ -45,7 +45,7 @@ public class LineRiderGameManager : MonoBehaviour
 
     public void LoseCurrentAttempt()
     {
-        Destroy(player.gameObject);
+        if (player != null) Destroy(player.gameObject);
         if (attemptTimes > 0)
         {
             attemptTimes--;
