@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Swipe : MonoBehaviour
 {
-    private bool tap, swipeLeft, swipeRight, swipeUp, swipeDown;
-    private bool isDraging = false;
+    public bool tap, swipeLeft, swipeRight, swipeUp, swipeDown;
+    private bool isDragging = false;
     
     // reference
     public GameObject automaticLink;
@@ -39,7 +39,7 @@ public class Swipe : MonoBehaviour
                 if (hit.collider.gameObject == gameObject)
                 {
                     tap = true;
-                    isDraging = true;
+                    isDragging = true;
                     startTouch = Input.mousePosition;
                 }
             }
@@ -48,7 +48,7 @@ public class Swipe : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(1))
         {
-            isDraging = false;
+            isDragging = false;
             Reset();
         }
         # endregion
@@ -69,14 +69,14 @@ public class Swipe : MonoBehaviour
                     if (hit.collider.gameObject == gameObject)
                     {
                         tap = true;
-                        isDraging = true;
+                        isDragging = true;
                         startTouch = Input.mousePosition;
                     }
                 }
             }
             else if (Input.touches[0].phase == TouchPhase.Ended || Input.touches[0].phase == TouchPhase.Canceled)
             {
-                isDraging = false;
+                isDragging = false;
                 Reset();
             }
         }
@@ -84,7 +84,7 @@ public class Swipe : MonoBehaviour
         
         // Calculate the distance
         swipeDelta = Vector2.zero;
-        if (isDraging)
+        if (isDragging)
         {
             if (Input.touchCount > 0)
             {
@@ -102,6 +102,28 @@ public class Swipe : MonoBehaviour
             // which direction?
             float x = swipeDelta.x;
             float y = swipeDelta.y;
+            if (Mathf.Abs(x) > Mathf.Abs(y))
+            {
+                if (x < 0)
+                {
+                    swipeLeft = true;
+                }
+                else
+                {
+                    swipeRight = true;
+                }
+            }
+            else
+            {
+                if (y < 0)
+                {
+                    swipeDown = true;
+                }
+                else
+                {
+                    swipeUp = true;
+                }
+            }
         }
     }
 
@@ -109,9 +131,14 @@ public class Swipe : MonoBehaviour
     {
         if (swipeDelta.magnitude > 125)
         {
-            var link = Instantiate(automaticLink, transform.position, Quaternion.identity);
-            link.transform.rotation = Quaternion.FromToRotation(Vector3.up, swipeDelta);
+            if (automaticLink)
+            {
+                var link = Instantiate(automaticLink, transform.position, Quaternion.identity);
+                link.transform.rotation = Quaternion.FromToRotation(Vector3.up, swipeDelta);
+            }
+            
         }
         startTouch = swipeDelta = Vector2.zero;
+        isDragging = false;
     }
 }

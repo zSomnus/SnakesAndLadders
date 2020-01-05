@@ -62,6 +62,7 @@ public class FruitNinjaManager : MonoBehaviour
     {
         if (!isCurrentTurnWin)
         {
+            gameState = MiniGameState.Failure;
             SendMessageToMainGame(false);
         }
         else
@@ -77,6 +78,7 @@ public class FruitNinjaManager : MonoBehaviour
             }
             else
             {
+                gameState = MiniGameState.Success;
                 SendMessageToMainGame(true);
             }
         }
