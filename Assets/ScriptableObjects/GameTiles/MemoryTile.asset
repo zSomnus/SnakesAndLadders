@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: MemoryTile
   m_EditorClassIdentifier: 
   positionIndex: 5
-  gameSceneIndex: 6
+  gameSceneIndex: 5
   tileNum: 12
   successRate: 0.5

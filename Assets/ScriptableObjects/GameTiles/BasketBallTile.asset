@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: BasketBallTile
   m_EditorClassIdentifier: 
   positionIndex: 13
-  gameSceneIndex: 7
+  gameSceneIndex: 6
   tileNum: 3
   successRate: 0.5

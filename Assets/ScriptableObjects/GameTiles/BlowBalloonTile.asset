@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: BlowBalloonTile
   m_EditorClassIdentifier: 
   positionIndex: 8
-  gameSceneIndex: 9
+  gameSceneIndex: 8
   tileNum: 1
   successRate: 0.5

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: SimonSaysTile
   m_EditorClassIdentifier: 
   positionIndex: 11
-  gameSceneIndex: 3
+  gameSceneIndex: 2
   tileNum: 4
   successRate: 0.5

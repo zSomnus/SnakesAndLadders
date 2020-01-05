@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: LineRiderTile
   m_EditorClassIdentifier: 
   positionIndex: 1
-  gameSceneIndex: 8
+  gameSceneIndex: 7
   tileNum: 3
   successRate: 0.4

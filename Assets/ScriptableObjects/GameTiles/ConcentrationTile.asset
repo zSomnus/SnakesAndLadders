@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: ConcentrationTile
   m_EditorClassIdentifier: 
   positionIndex: 6
-  gameSceneIndex: 4
+  gameSceneIndex: 3
   tileNum: 2
   successRate: 0.5
