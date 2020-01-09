@@ -1,43 +1,31 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MemoryTile : MonoBehaviour
+namespace MiniGame.MemoryTile
 {
-    public Color surfaceColor;
-    public Color hiddenColor;
-    public bool isTarget;
-
-    private Image image;
-    // Start is called before the first frame update
-    void Start()
+    public class MemoryTile : MonoBehaviour
     {
-        image = GetComponent<Image>();
-        image.color = surfaceColor;
-    }
+        public Color surfaceColor;
+        public Color hiddenColor;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        private Image image;
 
-    public void ToggleColor(bool hidden)
-    {
-        if (hidden)
+        private void Awake()
         {
-            image.color = hiddenColor;
-        }
-        else
-        {
+            image = GetComponent<Image>();
             image.color = surfaceColor;
         }
-    }
 
-    public void UnCover()
-    {
+        public void ToggleColor(bool hidden)
+        {
+            image.color = hidden ? hiddenColor : surfaceColor;
+        }
+
+        public void UnCover()
+        {
         
-        MiniGameMemoryTileUiController.Instance.UncoverTile(this.gameObject);
+            MiniGameMemoryTileUiController.Instance.UncoverTile(this.gameObject);
+        }
     }
 }

@@ -97,7 +97,7 @@
             <e p="Destroyer.cs" t="Include" />
             <e p="DungeonCameraFollow.cs" t="Include" />
             <e p="KnobController.cs" t="Include" />
-            <e p="MazeTimer.cs" t="Include" />
+            <e p="MazeRunnerManager.cs" t="Include" />
             <e p="ResizeCamera.cs" t="Include" />
             <e p="RoomSpawner.cs" t="Include" />
             <e p="RoomTemplates.cs" t="Include" />

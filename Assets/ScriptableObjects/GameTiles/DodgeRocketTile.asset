@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: DodgeRocketTile
   m_EditorClassIdentifier: 
   positionIndex: 4
-  gameSceneIndex: 5
-  tileNum: 10
+  gameSceneIndex: 4
+  tileNum: 1
   successRate: 0.5

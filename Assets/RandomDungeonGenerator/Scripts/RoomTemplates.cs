@@ -21,7 +21,7 @@ namespace RandomDungeonGenerator.Scripts
 
         private bool spawnedBoss;
         public GameObject boss;
-        public MazeTimer timer;
+        public MazeRunnerManager runnerManager;
 
         private void Update() {
             if(waitTime <= 0 && spawnedBoss == false){
@@ -33,7 +33,7 @@ namespace RandomDungeonGenerator.Scripts
                         
                         var player = Instantiate(playerPrefab, rooms[0].transform.position, Quaternion.identity);
                         spawnedPlayer = true;
-                        timer.gameStart = true;
+                        runnerManager.gameStart = true;
                         
                         playerCamera.gameObject.SetActive(true);
                         playerCamera.GetComponent<DungeonCameraFollow>().enabled = true;

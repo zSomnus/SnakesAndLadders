@@ -100,8 +100,13 @@ namespace RandomDungeonGenerator.Scripts
         {
             if (other.gameObject.CompareTag("Destination"))
             {
-                SaveSystem.UpdateMiniGameData(true);
-                LevelLoader.Instance.LoadMainGame();
+                if (MazeRunnerManager.gameState == MiniGameState.Pending)
+                {
+                    MazeRunnerManager.gameState = MiniGameState.Success;
+                    SaveSystem.UpdateMiniGameData(true);
+                    LevelLoader.Instance.LoadMainGame();
+                }
+                
             }
         }
     }

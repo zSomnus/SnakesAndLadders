@@ -3,11 +3,12 @@ using UnityEngine;
 
 namespace RandomDungeonGenerator.Scripts
 {
-    public class MazeTimer : MonoBehaviour
+    public class MazeRunnerManager : MonoBehaviour
     {
         public TextMeshProUGUI t_timer;
+        public static MiniGameState gameState;
 
-        [SerializeField] private float timeToLose = 6f;
+        [SerializeField] private float timeToLose = 10f;
 
         public bool gameStart;
 
@@ -21,8 +22,12 @@ namespace RandomDungeonGenerator.Scripts
 
                 if (timeToLose <= 0)
                 {
-                    SaveSystem.UpdateMiniGameData(false);
-                    LevelLoader.Instance.LoadMainGame();
+                    if (gameState == MiniGameState.Pending)
+                    {
+                        gameState = MiniGameState.Failure;
+                        SaveSystem.UpdateMiniGameData(false);
+                        LevelLoader.Instance.LoadMainGame();
+                    }
                 }
             }
         }

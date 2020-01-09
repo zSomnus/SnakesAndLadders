@@ -47,7 +47,6 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -95,7 +94,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45620c28069a60649a99a314b8af96d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  linkSpeed: 5
+  linkSpeed: 10
+  timeInvalid: 3
 --- !u!61 &143545115
 BoxCollider2D:
   m_ObjectHideFlags: 0

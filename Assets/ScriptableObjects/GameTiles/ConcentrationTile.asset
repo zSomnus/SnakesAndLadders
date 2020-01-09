@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   positionIndex: 6
   gameSceneIndex: 3
-  tileNum: 2
+  tileNum: 1
   successRate: 0.5

@@ -6,6 +6,7 @@ public class Swipe : MonoBehaviour
 {
     public bool tap, swipeLeft, swipeRight, swipeUp, swipeDown;
     private bool isDragging = false;
+    public float deadZone = 60;
     
     // reference
     public GameObject automaticLink;
@@ -29,22 +30,9 @@ public class Swipe : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))
         {
-            Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-                
-            Vector2 mousePos2D = new Vector2(mousePos.x, mousePos.y);
-            
-            RaycastHit2D hit = Physics2D.Raycast(mousePos2D, Vector2.zero);
-            if (hit)
-            {
-                if (hit.collider.gameObject == gameObject)
-                {
-                    tap = true;
-                    isDragging = true;
-                    startTouch = Input.mousePosition;
-                }
-            }
-            
-            
+            tap = true; 
+            isDragging = true; 
+            startTouch = Input.mousePosition;
         }
         else if (Input.GetMouseButtonUp(1))
         {
@@ -129,7 +117,7 @@ public class Swipe : MonoBehaviour
 
     public void Reset()
     {
-        if (swipeDelta.magnitude > 125)
+        if (swipeDelta.magnitude > deadZone)
         {
             if (automaticLink)
             {

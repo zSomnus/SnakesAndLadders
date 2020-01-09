@@ -154,4 +154,5 @@ MonoBehaviour:
   swipeRight: 0
   swipeUp: 0
   swipeDown: 0
+  deadZone: 60
   automaticLink: {fileID: 0}

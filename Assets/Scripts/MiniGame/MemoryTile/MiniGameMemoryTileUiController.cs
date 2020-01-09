@@ -5,136 +5,126 @@ using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class MiniGameMemoryTileUiController : MonoBehaviour
+namespace MiniGame.MemoryTile
 {
-    private List<GameObject> _tileGroup;    // 6 x 6
-    private List<GameObject> _targetTiles;
-    private float timeToRemember = 5f;
-    public int NumOfTilesToRemember = 8;
-    public Color surfaceColor = Color.white;
-    public Color hiddenColor = Color.gray;
-    public Color hiddenColorForTarget = Color.black;
-
-    public static MiniGameMemoryTileUiController Instance;
-
-    public TextMeshProUGUI tipText;
-
-    public delegate void ToggleGameStateDelegate(MemoryTileGameState oldGameState ,MemoryTileGameState newGameState);
-    
-    
-
-    // Enum
-    private MemoryTileGameState gameState;
-
-    public GameObject tileParent;
-
-    private void Awake()
+    public class MiniGameMemoryTileUiController : MonoBehaviour
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
+        private List<GameObject> _tileGroup;    // 6 x 6
+        private List<GameObject> _targetTiles;
+        public float timeToRemember = 5f;
+        public int NumOfTilesToRemember = 8;
+        public Color surfaceColor = Color.white;
+        public Color hiddenColor = Color.gray;
+        public Color hiddenColorForTarget = Color.black;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-        
-        gameState = MemoryTileGameState.Hidden;
-        _tileGroup = new List<GameObject>();
-        _targetTiles = new List<GameObject>();
-        foreach (Transform child in tileParent.transform)
+        public static MiniGameMemoryTileUiController Instance;
+
+        // Enum
+        private MemoryTileGameState gameState;
+
+        public GameObject tileParent;
+
+        private void Awake()
         {
-            _tileGroup.Add(child.gameObject);   
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
 
-        for (int i = 0; i < NumOfTilesToRemember; i++)
+        // Start is called before the first frame update
+        void Start()
         {
+            gameState = MemoryTileGameState.Hidden;
+            _tileGroup = new List<GameObject>();
+            _targetTiles = new List<GameObject>();
+            foreach (Transform child in tileParent.transform)
+            {
+                _tileGroup.Add(child.gameObject);   
+            }
+
+            for (int i = 0; i < NumOfTilesToRemember; i++)
+            {
             
-            int randomNum = Random.Range(0, _tileGroup.Count);
-            while(_targetTiles.Contains(_tileGroup[randomNum]))
-            {
-                randomNum = Random.Range(0, _tileGroup.Count);
+                int randomNum = Random.Range(0, _tileGroup.Count);
+                while(_targetTiles.Contains(_tileGroup[randomNum]))
+                {
+                    randomNum = Random.Range(0, _tileGroup.Count);
                 
+                }
+                _targetTiles.Add(_tileGroup[randomNum]);
             }
-            _targetTiles.Add(_tileGroup[randomNum]);
-        }
 
-        foreach (GameObject tile in _tileGroup)
-        {
-            tile.GetComponent<MemoryTile>().hiddenColor = hiddenColor;
-            tile.GetComponent<MemoryTile>().surfaceColor = surfaceColor;
-        }
-        
-        foreach (GameObject targetTile in _targetTiles)
-        {
-            targetTile.GetComponent<MemoryTile>().hiddenColor = hiddenColorForTarget;
-            targetTile.GetComponent<MemoryTile>().isTarget = true;
-        }
-
-        foreach (GameObject tile in _tileGroup)
-        {
-            tile.GetComponent<MemoryTile>().ToggleColor(false);
-        }
-        StartCoroutine(ShowHint(1));
-    }
-
-    public void UncoverTile(GameObject tile)
-    {
-        if (gameState != MemoryTileGameState.Guess)
-            return;
-        tile.GetComponent<MemoryTile>().ToggleColor(true);
-        if (_targetTiles.Contains(tile))
-        {
-            _targetTiles.Remove(tile);
-            if (_targetTiles.Count == 0)
+            foreach (GameObject tile in _tileGroup)
             {
-                gameState = MemoryTileGameState.Success;
-                SaveSystem.UpdateMiniGameData(true);
-                LevelLoader.Instance.LoadMainGame();
-                print("Mini game succeeded");
+                tile.GetComponent<MemoryTile>().hiddenColor = hiddenColor;
+                tile.GetComponent<MemoryTile>().surfaceColor = surfaceColor;
             }
-            print("Find a tile");
+        
+            foreach (GameObject targetTile in _targetTiles)
+            {
+                targetTile.GetComponent<MemoryTile>().hiddenColor = hiddenColorForTarget;
+            }
+
+            foreach (GameObject tile in _tileGroup)
+            {
+                tile.GetComponent<MemoryTile>().ToggleColor(false);
+            }
+            StartCoroutine(ShowHint(1));
         }
-        else
+
+        public void UncoverTile(GameObject tile)
         {
-            gameState = MemoryTileGameState.Failure;
+            if (gameState != MemoryTileGameState.Guess)
+                return;
+            tile.GetComponent<MemoryTile>().ToggleColor(true);
+            if (_targetTiles.Contains(tile))
+            {
+                _targetTiles.Remove(tile);
+                if (_targetTiles.Count == 0)
+                {
+                    gameState = MemoryTileGameState.Success;
+                    SaveSystem.UpdateMiniGameData(true);
+                    LevelLoader.Instance.LoadMainGame();
+                }
+            }
+            else
+            {
+                gameState = MemoryTileGameState.Failure;
+                ToggleAllTileColor(true);
+                SaveSystem.UpdateMiniGameData(false);
+                LevelLoader.Instance.LoadMainGame();
+            }
+        }
+    
+
+        public IEnumerator ShowHint(float hintDuration)
+        {
+            yield return new WaitForSeconds(hintDuration);
+            gameState = MemoryTileGameState.ShowHint;
             ToggleAllTileColor(true);
-            SaveSystem.UpdateMiniGameData(false);
-            LevelLoader.Instance.LoadMainGame();
-            print("Mini game fails");
+            StartCoroutine(HideTile(5));
         }
-    }
     
-
-    public IEnumerator ShowHint(float hintDuration)
-    {
-        yield return new WaitForSeconds(hintDuration);
-        gameState = MemoryTileGameState.ShowHint;
-        ToggleAllTileColor(true);
-        StartCoroutine(HideTile(5));
-    }
-    
-    public IEnumerator HideTile(float secToWait)
-    {
-        yield return new WaitForSeconds(secToWait);
-        gameState = MemoryTileGameState.Guess;
-        ToggleAllTileColor(false);
-    }
-    
-    public void ToggleAllTileColor(bool hidden)
-    {
-        print("toggle al tile color to "+hidden);
-        foreach (GameObject tile in _tileGroup)
+        public IEnumerator HideTile(float secToWait)
         {
-            tile.GetComponent<MemoryTile>().ToggleColor(hidden);
+            yield return new WaitForSeconds(secToWait);
+            gameState = MemoryTileGameState.Guess;
+            ToggleAllTileColor(false);
+        }
+    
+        public void ToggleAllTileColor(bool hidden)
+        {
+            foreach (GameObject tile in _tileGroup)
+            {
+                tile.GetComponent<MemoryTile>().ToggleColor(hidden);
+            }
         }
     }
-}
 
-public enum MemoryTileGameState{Hidden, ShowHint, Guess, Success, Failure}
+    public enum MemoryTileGameState{Hidden, ShowHint, Guess, Success, Failure}
+}
